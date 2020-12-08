@@ -61,18 +61,10 @@ export default {
   name: 'Login',
   data() {
     const validateMobile = (rule, value, callback) => {
-      if (validMobile(value)) {
-        callback()
-      } else {
-        callback(new Error('请输入正确的手机号'))
-      }
+      validMobile(value) ? callback() : callback(new Error('请输入正确的手机号'))
     }
     const validatePassword = (rule, value, callback) => {
-      if (validPassword(value)) {
-        callback()
-      } else {
-        callback(new Error('请输入6-16位数密码'))
-      }
+      validPassword(value) ? callback() : callback(new Error('请输入6-16位数密码'))
     }
     return {
       loginForm: {
