@@ -8,15 +8,15 @@
         </h3>
       </div>
 
-      <el-form-item prop="username">
+      <el-form-item prop="mobile">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
         <el-input
-          ref="username"
-          v-model="loginForm.username"
-          placeholder="请输入用户名"
-          name="username"
+          ref="mobile"
+          v-model="loginForm.mobile"
+          placeholder="请输入手机号"
+          name="mobile"
           type="text"
           tabindex="1"
           auto-complete="on"
@@ -55,16 +55,16 @@
 </template>
 
 <script>
-import { validUsername } from '@/utils/validate'
+import { validMobile } from '@/utils/validate'
 
 export default {
   name: 'Login',
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
-        callback(new Error('用户名不符合'))
-      } else {
+    const validateMobile = (rule, value, callback) => {
+      if (validMobile(value)) {
         callback()
+      } else {
+        callback(new Error('请输入正确的手机号'))
       }
     }
     const validatePassword = (rule, value, callback) => {
@@ -76,11 +76,14 @@ export default {
     }
     return {
       loginForm: {
-        username: 'admin',
+        mobile: '',
         password: '111111'
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+        mobile: [
+          { required: true, trigger: 'blur', message: '用户名不能为空' },
+          { trigger: 'blur', validator: validateMobile }
+        ],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
       loading: false,
