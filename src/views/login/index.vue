@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import { validMobile } from '@/utils/validate'
+import { validMobile, validPassword } from '@/utils/validate'
 
 export default {
   name: 'Login',
@@ -68,23 +68,26 @@ export default {
       }
     }
     const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('密码不符合'))
-      } else {
+      if (validPassword(value)) {
         callback()
+      } else {
+        callback(new Error('请输入6-16位数密码'))
       }
     }
     return {
       loginForm: {
         mobile: '',
-        password: '111111'
+        password: ''
       },
       loginRules: {
         mobile: [
           { required: true, trigger: 'blur', message: '用户名不能为空' },
           { trigger: 'blur', validator: validateMobile }
         ],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        password: [
+          { required: true, trigger: 'blur', message: '密码不能为空' },
+          { trigger: 'blur', validator: validatePassword }
+        ]
       },
       loading: false,
       passwordType: 'password',
