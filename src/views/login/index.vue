@@ -57,7 +57,6 @@
 <script>
 import { validMobile, validPassword } from '@/utils/validate'
 import { login } from '@/api/user'
-import { setToken } from '@/utils/auth'
 
 export default {
   name: 'Login',
@@ -116,7 +115,7 @@ export default {
             console.log(res.data)
             const { data, message, success } = res.data
             if (success) {
-              setToken(data)
+              this.$store.commit('user/setToken', data)
               this.$message.success(message)
             } else {
               this.$message.error(message)
