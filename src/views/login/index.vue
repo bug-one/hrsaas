@@ -57,6 +57,7 @@
 <script>
 import { validMobile, validPassword } from '@/utils/validate'
 import { login } from '@/api/user'
+import { setToken } from '@/utils/auth'
 
 export default {
   name: 'Login',
@@ -112,7 +113,14 @@ export default {
         if (valid) {
           login(this.loginForm).then(res => {
             this.loading = false
-            console.log(res)
+            console.log(res.data)
+            const { data, message, success } = res.data
+            if (success) {
+              setToken(data)
+              this.$message.success(message)
+            } else {
+              this.$message.error(message)
+            }
           })
         } else {
           this.loading = false
