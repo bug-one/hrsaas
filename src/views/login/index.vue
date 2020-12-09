@@ -56,6 +56,7 @@
 
 <script>
 import { validMobile, validPassword } from '@/utils/validate'
+import { login } from '@/api/user'
 
 export default {
   name: 'Login',
@@ -107,17 +108,14 @@ export default {
     },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
+        this.loading = true
         if (valid) {
-          this.loading = true
-          this.$store.dispatch('user/login', this.loginForm).then(() => {
-            this.$router.push({ path: this.redirect || '/' })
+          login(this.loginForm).then(res => {
             this.loading = false
-          }).catch(() => {
-            this.loading = false
+            console.log(res)
           })
         } else {
-          console.log('error submit!!')
-          return false
+          this.loading = false
         }
       })
     }
