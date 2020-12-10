@@ -110,6 +110,8 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.$store.dispatch('user/login', this.loginForm).then(() => {
+            this.$router.push('/')
+          }).finally(() => {
             this.loading = false
           })
         } else {

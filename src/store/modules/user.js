@@ -1,6 +1,5 @@
 import { setToken, getToken } from '@/utils/auth'
 import { login } from '@/api/user'
-import { Message } from 'element-ui'
 
 export default {
   namespaced: true,
@@ -15,14 +14,8 @@ export default {
   },
   actions: {
     login(context, params) {
-      return login(params).then(res => {
-        const { data, message, success } = res.data
-        if (success) {
-          context.commit('setToken', data)
-          Message.success(message)
-        } else {
-          Message.error(message)
-        }
+      return login(params).then(token => {
+        context.commit('setToken', token)
       })
     }
   }
