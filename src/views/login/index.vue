@@ -106,9 +106,14 @@ export default {
       })
     },
     handleLogin() {
+      this.loading = true
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          this.$store.dispatch('user/login', this.loginForm)
+          this.$store.dispatch('user/login', this.loginForm).then(() => {
+            this.loading = false
+          })
+        } else {
+          this.loading = false
         }
       })
     }

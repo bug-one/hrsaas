@@ -15,7 +15,7 @@ export default {
   },
   actions: {
     login(context, params) {
-      login(params).then(res => {
+      return login(params).then(res => {
         const { data, message, success } = res.data
         if (success) {
           context.commit('setToken', data)
