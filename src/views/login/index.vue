@@ -111,6 +111,7 @@ export default {
         const valid = await this.$refs.loginForm.validate()
         if (valid) {
           await this.$store.dispatch('user/login', this.loginForm)
+          this.$message.success('登录成功')
           this.$router.push('/')
         }
       } catch (err) {
