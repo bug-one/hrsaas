@@ -10,6 +10,9 @@ router.beforeEach((to, from, next) => {
     if (to.path === '/login') {
       next('/')
     } else {
+      if (!store.getters.userId) {
+        store.dispatch('user/getUserInfo')
+      }
       next()
     }
   } else {
