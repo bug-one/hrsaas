@@ -1,5 +1,5 @@
 import { setToken, getToken } from '@/utils/auth'
-import { login, getUserInfo } from '@/api/user'
+import { login, getUserInfo, getUserInfoById } from '@/api/user'
 
 export default {
   namespaced: true,
@@ -22,9 +22,11 @@ export default {
       context.commit('setToken', token)
     },
     async getUserInfo(context) {
-      const res = await getUserInfo()
-      context.commit('getUserInfo', res)
+      const userInfo = await getUserInfo()
+      const userDetail = await getUserInfoById(userInfo.userId)
+      context.commit('getUserInfo', { ...userInfo, ...userDetail })
     }
+
   }
 
 }
