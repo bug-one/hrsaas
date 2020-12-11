@@ -17,15 +17,13 @@ export default {
     }
   },
   actions: {
-    login(context, params) {
-      return login(params).then(token => {
-        context.commit('setToken', token)
-      })
+    async login(context, params) {
+      const token = await login(params)
+      context.commit('setToken', token)
     },
-    getUserInfo(context) {
-      return getUserInfo().then(res => {
-        context.commit('getUserInfo', res)
-      })
+    async getUserInfo(context) {
+      const res = await getUserInfo()
+      context.commit('getUserInfo', res)
     }
   }
 
