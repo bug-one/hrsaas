@@ -1,5 +1,7 @@
 <template>
   <el-card class="tree-card">
+    <el-divider content-position="left">组织架构</el-divider>
+
     <treeTools :data="companyTitle" :is-root="true" />
 
     <el-tree :data="companyTree" :props="defaultProps">
