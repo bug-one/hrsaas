@@ -1,4 +1,4 @@
-import { setToken, getToken } from '@/utils/auth'
+import { setToken, getToken, removeToken } from '@/utils/auth'
 import { login, getUserInfo, getUserInfoById } from '@/api/user'
 
 export default {
@@ -14,6 +14,13 @@ export default {
     },
     getUserInfo(state, data) {
       state.userInfo = data
+    },
+    removeUserInfo(state) {
+      state.userInfo = {}
+    },
+    removeToken(state) {
+      state.token = ''
+      removeToken()
     }
   },
   actions: {
@@ -25,6 +32,10 @@ export default {
       const userInfo = await getUserInfo()
       const userDetail = await getUserInfoById(userInfo.userId)
       context.commit('getUserInfo', { ...userInfo, ...userDetail })
+    },
+    logout({ commit }) {
+      commit('removeUserInfo')
+      commit('removeToken')
     }
 
   }
