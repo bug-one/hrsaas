@@ -1,4 +1,4 @@
-import { setToken, getToken, removeToken } from '@/utils/auth'
+import { setToken, getToken, removeToken, setTimeStamp } from '@/utils/auth'
 import { login, getUserInfo, getUserInfoById } from '@/api/user'
 
 export default {
@@ -27,6 +27,7 @@ export default {
     async login(context, params) {
       const token = await login(params)
       context.commit('setToken', token)
+      setTimeStamp()
     },
     async getUserInfo(context) {
       const userInfo = await getUserInfo()
