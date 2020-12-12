@@ -6,6 +6,8 @@ Vue.use(Router)
 /* Layout */
 import Layout from '@/layout'
 
+import departments from '@/router/modules/departments'
+
 /**
  * Note: sub-menu only appear when route children.length >= 1
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -59,16 +61,7 @@ export const constantRoutes = [
 ]
 
 export const asyncRoutes = [
-  {
-    path: '/departments',
-    component: Layout,
-    children: [{
-      path: '',
-      name: 'Departments',
-      component: () => import('@/views/departments/index'),
-      meta: { title: '组织架构' }
-    }]
-  }
+  departments
 ]
 
 const createRouter = () => new Router({
