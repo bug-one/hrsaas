@@ -12,3 +12,11 @@ export const delDepartments = function(id) {
     url: '/company/department/' + id
   })
 }
+
+export const addDepartments = function(data) {
+  return request({
+    method: 'post',
+    url: '/company/department',
+    data
+  })
+}

@@ -7,16 +7,19 @@
     <el-tree :data="companyTree" :props="defaultProps" default-expand-all>
       <treeTools slot-scope="scope" :data="scope.data" />
     </el-tree>
+    <addDept />
   </el-card>
 </template>
 
 <script>
 import treeTools from './components/tree-tools'
+import addDept from './components/add-dept'
 import { getDepartments } from '@/api/department'
 import { convertTreeData } from '@/utils'
 export default {
   components: {
-    treeTools
+    treeTools,
+    addDept
   },
   data() {
     return {
