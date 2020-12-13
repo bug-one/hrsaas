@@ -5,3 +5,10 @@ export const getDepartments = function() {
     url: '/company/department'
   })
 }
+
+export const delDepartments = function(id) {
+  return request({
+    method: 'delete',
+    url: '/company/department/' + id
+  })
+}

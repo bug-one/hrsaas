@@ -9,15 +9,15 @@
         <el-col>{{ data.manager }}</el-col>
         <el-col>
           <!-- 下拉菜单 element -->
-          <el-dropdown>
+          <el-dropdown @command="handleCommand">
             <span>
               操作<i class="el-icon-arrow-down" />
             </span>
             <!-- 下拉菜单 -->
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>添加子部门</el-dropdown-item>
-              <el-dropdown-item v-if="!isRoot">查看部门</el-dropdown-item>
-              <el-dropdown-item v-if="!isRoot">删除部门</el-dropdown-item>
+              <el-dropdown-item command="add">添加子部门</el-dropdown-item>
+              <el-dropdown-item v-if="!isRoot" command="edit">查看部门</el-dropdown-item>
+              <el-dropdown-item v-if="!isRoot" command="del">删除部门</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </el-col>
@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import { delDepartments } from '@/api/department'
 export default {
   props: {
     data: {
@@ -35,6 +36,31 @@ export default {
     },
     isRoot: {
       type: Boolean
+    }
+  },
+  methods: {
+    handleCommand(option) {
+      if (option === 'del') {
+        this.$confirm('此操作将永久删除该部门, 是否继续?', '小心点啊', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          delDepartments(this.data.id).then(res => {
+            if (res.success) {
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              })
+            }
+          }).catch(() => {})
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '你挽救了一个部门'
+          })
+        })
+      }
     }
   }
 
