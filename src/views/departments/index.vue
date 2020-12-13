@@ -4,7 +4,7 @@
 
     <treeTools :data="companyTitle" :is-root="true" />
 
-    <el-tree :data="companyTree" :props="defaultProps">
+    <el-tree :data="companyTree" :props="defaultProps" default-expand-all>
       <treeTools slot-scope="scope" :data="scope.data" />
     </el-tree>
   </el-card>
@@ -13,6 +13,7 @@
 <script>
 import treeTools from './components/tree-tools'
 import { getDepartments } from '@/api/department'
+import { convertTreeData } from '@/utils'
 export default {
   components: {
     treeTools
@@ -29,13 +30,16 @@ export default {
   },
   created() {
     getDepartments().then(res => {
-      console.log(res)
       this.companyTitle = {
         name: res.companyName,
         manager: '负责人'
       }
-      this.companyTree = res.depts
+
+      this.companyTree = convertTreeData(res.depts, '')
     })
+  },
+  methods: {
+
   }
 }
 </script>
