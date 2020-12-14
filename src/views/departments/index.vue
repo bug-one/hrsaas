@@ -5,9 +5,9 @@
     <treeTools :data="companyTitle" :is-root="true" />
 
     <el-tree :data="companyTree" :props="defaultProps" default-expand-all>
-      <treeTools slot-scope="scope" :data="scope.data" />
+      <treeTools slot-scope="scope" :data="scope.data" @addDepartment="addDepartment" />
     </el-tree>
-    <addDept />
+    <addDept :visible="visible" :node="node" />
   </el-card>
 </template>
 
@@ -28,7 +28,9 @@ export default {
       defaultProps: {
         label: 'name',
         children: 'children'
-      }
+      },
+      visible: false,
+      node: {}
     }
   },
   created() {
@@ -42,7 +44,10 @@ export default {
     })
   },
   methods: {
-
+    addDepartment(node) {
+      this.visible = true
+      this.node = node
+    }
   }
 }
 </script>

@@ -47,12 +47,10 @@ export default {
           type: 'warning'
         }).then(() => {
           delDepartments(this.data.id).then(res => {
-            if (res.success) {
-              this.$message({
-                type: 'success',
-                message: '删除成功!'
-              })
-            }
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
           }).catch(() => {})
         }).catch(() => {
           this.$message({
@@ -60,6 +58,9 @@ export default {
             message: '你挽救了一个部门'
           })
         })
+      }
+      if (option === 'add') {
+        this.$emit('addDepartment', this.data)
       }
     }
   }
