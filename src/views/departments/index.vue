@@ -7,7 +7,7 @@
     <el-tree :data="companyTree" :props="defaultProps" default-expand-all>
       <treeTools slot-scope="scope" :data="scope.data" @addDepartment="addDepartment" />
     </el-tree>
-    <addDept :visible="visible" :node="node" />
+    <addDept :visible.sync="visible" :node="node" @getDepartment="getDepartments" />
   </el-card>
 </template>
 
@@ -34,19 +34,22 @@ export default {
     }
   },
   created() {
-    getDepartments().then(res => {
-      this.companyTitle = {
-        name: res.companyName,
-        manager: '负责人'
-      }
-
-      this.companyTree = convertTreeData(res.depts, '')
-    })
+    this.getDepartments()
   },
   methods: {
     addDepartment(node) {
       this.visible = true
       this.node = node
+    },
+    getDepartments() {
+      getDepartments().then(res => {
+        this.companyTitle = {
+          name: res.companyName,
+          manager: '负责人'
+        }
+
+        this.companyTree = convertTreeData(res.depts, '')
+      })
     }
   }
 }

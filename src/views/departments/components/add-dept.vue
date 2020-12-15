@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="新增部门" :visible="visible">
+  <el-dialog title="新增部门" :visible="visible" @close="btnCancel">
     <!-- 表单组件  el-form   label-width设置label的宽度   -->
     <!-- 匿名插槽 -->
     <el-form ref="elForm" label-width="120px" :model="formData" :rules="rules">
@@ -27,7 +27,7 @@
     <el-row slot="footer" type="flex" justify="center">
       <!-- 列被分为24 -->
       <el-col :span="16">
-        <el-button size="big">取消</el-button>
+        <el-button size="big" @click="btnCancel">取消</el-button>
         <el-button type="primary" size="big" @click="confirm">确定</el-button>
       </el-col>
     </el-row>
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { getDepartments } from '@/api/department'
+import { addDepartments, getDepartments } from '@/api/department'
 import { getEmployeeSimple } from '@/api/employee'
 export default {
   props: {
@@ -88,20 +88,26 @@ export default {
     }
   },
   methods: {
-    confirm() {
-      this.$refs.elForm.validate((valid) => {
-        if (valid) {
-          console.log('验证成功')
-        } else {
-          console.log('验证失败')
-          return
+    async confirm() {
+      try {
+        const isValid = await this.$refs.elForm.validate()
+        if (isValid) {
+          this.formData.pid = this.node.id
+          await addDepartments(this.formData)
+          this.btnCancel()
+          this.$emit('getDepartment')
         }
-      })
+      } catch {
+        console.log()
+      }
     },
     getEmployeeSimple() {
       getEmployeeSimple().then(res => {
         this.people = res
       })
+    },
+    btnCancel() {
+      this.$emit('update:visible', false)
     }
   }
 }
