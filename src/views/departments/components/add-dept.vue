@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="新增部门" :visible="visible" @close="btnCancel">
+  <el-dialog :title="title" :visible="visible" @close="btnCancel">
     <!-- 表单组件  el-form   label-width设置label的宽度   -->
     <!-- 匿名插槽 -->
     <el-form ref="elForm" label-width="120px" :model="formData" :rules="rules">
@@ -87,6 +87,11 @@ export default {
       people: []
     }
   },
+  computed: {
+    title() {
+      return this.formData.id ? '编辑部门' : '新增部门'
+    }
+  },
   methods: {
     async confirm() {
       try {
@@ -107,6 +112,12 @@ export default {
       })
     },
     btnCancel() {
+      this.formData = {
+        name: '',
+        code: '',
+        introduce: '',
+        manager: ''
+      }
       this.$emit('update:visible', false)
       this.$refs.elForm.resetFields()
     },
