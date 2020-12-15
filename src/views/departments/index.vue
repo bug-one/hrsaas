@@ -5,9 +5,9 @@
     <treeTools :data="companyTitle" :is-root="true" />
 
     <el-tree :data="companyTree" :props="defaultProps" default-expand-all>
-      <treeTools slot-scope="scope" :data="scope.data" @addDepartment="addDepartment" @delDepartment="getDepartments" />
+      <treeTools slot-scope="scope" :data="scope.data" @addDepartment="addDepartment" @delDepartment="getDepartments" @editDepartment="editDepartment" />
     </el-tree>
-    <addDept :visible.sync="visible" :node="node" @getDepartment="getDepartments" />
+    <addDept ref="handelDept" :visible.sync="visible" :node="node" @getDepartment="getDepartments" />
   </el-card>
 </template>
 
@@ -49,6 +49,13 @@ export default {
         }
 
         this.companyTree = convertTreeData(res.depts, '')
+      })
+    },
+    editDepartment(node) {
+      this.visible = true
+      this.node = node
+      this.$nextTick(() => {
+        this.$refs.handelDept.getDepartmentDetail()
       })
     }
   }

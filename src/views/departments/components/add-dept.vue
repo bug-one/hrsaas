@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { addDepartments, getDepartments } from '@/api/department'
+import { addDepartments, getDepartments, getDepartmentsDetail } from '@/api/department'
 import { getEmployeeSimple } from '@/api/employee'
 export default {
   props: {
@@ -109,6 +109,10 @@ export default {
     btnCancel() {
       this.$emit('update:visible', false)
       this.$refs.elForm.resetFields()
+    },
+    async getDepartmentDetail() {
+      const data = await getDepartmentsDetail(this.node.id)
+      this.formData = data
     }
   }
 }

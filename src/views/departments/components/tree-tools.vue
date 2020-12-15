@@ -63,6 +63,9 @@ export default {
       if (option === 'add') {
         this.$emit('addDepartment', this.data)
       }
+      if (option === 'edit') {
+        this.$emit('editDepartment', this.data)
+      }
     }
   }
 

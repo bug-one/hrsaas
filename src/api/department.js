@@ -20,3 +20,9 @@ export const addDepartments = function(data) {
     data
   })
 }
+
+export const getDepartmentsDetail = function(id) {
+  return request({
+    url: '/company/department/' + id
+  })
+}
