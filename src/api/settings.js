@@ -19,3 +19,11 @@ export const delRoleById = (id) => {
     url: '/sys/role/' + id
   })
 }
+
+export const addRole = (data) => {
+  return request({
+    method: 'post',
+    url: '/sys/role',
+    data
+  })
+}

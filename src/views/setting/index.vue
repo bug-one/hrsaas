@@ -6,7 +6,7 @@
           <el-tab-pane label="角色名称" name="role">
             <el-row type="flex" align="middle" style="height: 60px">
               <el-col>
-                <el-button size="small" type="primary">新增角色</el-button>
+                <el-button size="small" type="primary" @click="addRole">新增角色</el-button>
               </el-col>
             </el-row>
             <el-table :data="roleList" style="width: 100%">
@@ -62,12 +62,31 @@
           </el-tab-pane>
         </el-tabs>
       </el-card>
+      <el-dialog
+        title="新增角色"
+        :visible.sync="showDialog"
+        width="50%"
+      >
+        <el-form ref="roleForm" :model="roleFormData" label-width="80px" :rules="rules">
+          <el-form-item label="角色名称" prop="name">
+            <el-input v-model="roleFormData.name" />
+          </el-form-item>
+          <el-form-item label="角色描述" prop="description">
+            <el-input v-model="roleFormData.description" />
+          </el-form-item>
+        </el-form>
+
+        <template slot="footer">
+          <el-button @click="btnCancel">取消</el-button>
+          <el-button type="primary" @click="confirm">确认</el-button>
+        </template>
+      </el-dialog>
     </div>
   </div>
 </template>
 
 <script>
-import { getCompanyDetail, getRoleList, delRoleById } from '@/api/settings'
+import { getCompanyDetail, getRoleList, delRoleById, addRole } from '@/api/settings'
 import { mapGetters } from 'vuex'
 export default {
   data() {
@@ -79,7 +98,27 @@ export default {
         pagesize: 5
       },
       total: 0,
-      companyDetail: {}
+      companyDetail: {},
+      showDialog: false,
+      roleFormData: {
+        name: '',
+        description: ''
+      },
+      rules: {
+        name: [
+          { required: true, trigger: 'blur', message: '角色名不能为空' },
+          { min: 3, max: 12, trigger: 'blur', message: '角色名需3-12位字符' }
+        ],
+        description: [
+          { required: true, message: '角色描述不能为空', trigger: 'blur' },
+          {
+            min: 5,
+            max: 100,
+            message: '角色描述在5-100字符之间',
+            trigger: 'blur'
+          }
+        ]
+      }
     }
   },
   computed: {
@@ -130,11 +169,33 @@ export default {
       } catch (error) {
         console.log(error)
       }
+    },
+    addRole() {
+      this.showDialog = true
+    },
+    async confirm() {
+      try {
+        const isValid = await this.$refs.roleForm.validate()
+        if (isValid) {
+          await addRole(this.roleFormData)
+          this.$message.success('新增成功')
+          this.btnCancel()
+          this.getRoleList()
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    btnCancel() {
+      this.showDialog = false
+      this.$refs.roleForm.resetFields()
     }
   }
 }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+ ::v-deep .el-dialog__header {
+    background: #ff69a7;
+}
 </style>
