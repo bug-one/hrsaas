@@ -9,9 +9,16 @@
       <el-form-item label="部门编码" prop="code">
         <el-input v-model="formData.code" style="width:80%" placeholder="1-50个字符" />
       </el-form-item>
-      <!-- <el-form-item label="部门负责人">
-        <el-select style="width:80%" placeholder="请选择" />
-      </el-form-item> -->
+      <el-form-item label="部门负责人" prop="manager">
+        <el-select v-model="formData.manager" placeholder="请选择" @focus="getEmployeeSimple">
+          <el-option
+            v-for="item in people"
+            :key="item.id"
+            :label="item.username"
+            :value="item.username"
+          />
+        </el-select>
+      </el-form-item>
       <el-form-item label="部门介绍" prop="introduce">
         <el-input v-model="formData.introduce" style="width:80%" placeholder="1-300个字符" type="textarea" :rows="3" />
       </el-form-item>
@@ -29,6 +36,7 @@
 
 <script>
 import { getDepartments } from '@/api/department'
+import { getEmployeeSimple } from '@/api/employee'
 export default {
   props: {
     visible: {
@@ -70,9 +78,13 @@ export default {
         introduce: [
           { required: true, trigger: 'blur', message: '部门介绍不能为空' },
           { min: 1, max: 300, trigger: 'blur', message: '部门编码必须为1-300个字符' }
+        ],
+        manager: [
+          { required: true, trigger: 'change', message: '负责人不能为空' }
 
         ]
-      }
+      },
+      people: []
     }
   },
   methods: {
@@ -84,6 +96,11 @@ export default {
           console.log('验证失败')
           return
         }
+      })
+    },
+    getEmployeeSimple() {
+      getEmployeeSimple().then(res => {
+        this.people = res
       })
     }
   }
