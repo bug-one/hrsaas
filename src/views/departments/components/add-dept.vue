@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import { getDepartments } from '@/api/department'
 export default {
   props: {
     visible: {
@@ -39,6 +40,21 @@ export default {
     }
   },
   data() {
+    const validateName = async(rules, value, callback) => {
+      let existed = false
+      const { depts } = await getDepartments()
+
+      depts.forEach(item => {
+        if (item.name === this.formData.name && item.pid === this.node.id) {
+          existed = true
+        }
+      })
+      if (existed) {
+        callback(new Error('同一部门下，部门名称不能重复'))
+      } else {
+        callback()
+      }
+    }
     return {
       formData: {
         name: '',
@@ -49,7 +65,8 @@ export default {
       rules: {
         name: [
           { required: true, trigger: 'blur', message: '部门名称不能为空' },
-          { min: 1, max: 50, trigger: 'blur', message: '部门名称必须为1-50个字符' }
+          { min: 1, max: 50, trigger: 'blur', message: '部门名称必须为1-50个字符' },
+          { trigger: 'blur', validator: validateName }
         ],
         code: [
           { required: true, trigger: 'blur', message: '部门编码不能为空' },
