@@ -50,11 +50,19 @@ export default {
   data() {
     const validateName = async(rules, value, callback) => {
       const { depts } = await getDepartments()
-      depts.some(item => item.name === this.formData.name && item.pid === this.node.id) ? callback(new Error('同一部门下，部门名称不能重复')) : callback()
+      if (this.formData.id) {
+        depts.some(item => item.id !== this.formData.id && item.name === this.formData.name && item.pid === this.node.pid) ? callback(new Error('同一部门下，部门名称不能重复')) : callback()
+      } else {
+        depts.some(item => item.name === this.formData.name && item.pid === this.node.id) ? callback(new Error('同一部门下，部门名称不能重复')) : callback()
+      }
     }
     const validateCode = async(rules, value, callback) => {
       const { depts } = await getDepartments()
-      depts.some(item => item.code === value && value) ? callback(new Error('不能有重复的编码')) : callback()
+      if (this.formData.id) {
+        depts.some(item => item.id !== this.formData.id && item.code === value && value) ? callback(new Error('不能有重复的编码')) : callback()
+      } else {
+        depts.some(item => item.code === value && value) ? callback(new Error('不能有重复的编码')) : callback()
+      }
     }
     return {
       formData: {
