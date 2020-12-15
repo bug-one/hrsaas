@@ -41,19 +41,8 @@ export default {
   },
   data() {
     const validateName = async(rules, value, callback) => {
-      let existed = false
       const { depts } = await getDepartments()
-
-      depts.forEach(item => {
-        if (item.name === this.formData.name && item.pid === this.node.id) {
-          existed = true
-        }
-      })
-      if (existed) {
-        callback(new Error('同一部门下，部门名称不能重复'))
-      } else {
-        callback()
-      }
+      depts.some(item => item.name === this.formData.name && item.pid === this.node.id) ? callback(new Error('同一部门下，部门名称不能重复')) : callback()
     }
     return {
       formData: {
