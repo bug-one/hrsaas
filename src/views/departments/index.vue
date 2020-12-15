@@ -5,7 +5,7 @@
     <treeTools :data="companyTitle" :is-root="true" />
 
     <el-tree :data="companyTree" :props="defaultProps" default-expand-all>
-      <treeTools slot-scope="scope" :data="scope.data" @addDepartment="addDepartment" />
+      <treeTools slot-scope="scope" :data="scope.data" @addDepartment="addDepartment" @delDepartment="getDepartments" />
     </el-tree>
     <addDept :visible.sync="visible" :node="node" @getDepartment="getDepartments" />
   </el-card>
