@@ -18,9 +18,9 @@
               <el-table-column prop="name" label="角色名" width="200px" />
               <el-table-column prop="description" label="描述" />
               <el-table-column label="操作" width="200px">
-                <template>
+                <template slot-scope="scope">
                   <el-button size="small" type="primary" plain>编辑角色</el-button>
-                  <el-button size="small" type="primary" plain>删除角色</el-button>
+                  <el-button size="small" type="primary" plain @click="delRole(scope.row.id)">删除角色</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import { getCompanyDetail, getRoleList } from '@/api/settings'
+import { getCompanyDetail, getRoleList, delRoleById } from '@/api/settings'
 import { mapGetters } from 'vuex'
 export default {
   data() {
@@ -113,6 +113,23 @@ export default {
     handleSizeChange(pagesize) {
       this.pageSetting.pagesize = pagesize
       this.getRoleList()
+    },
+    async delRole(id) {
+      try {
+        await this.$confirm('此操作将永久删除该角色, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+        await delRoleById(id)
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        })
+        this.getRoleList()
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 }

@@ -12,3 +12,10 @@ export const getCompanyDetail = (id) => {
     url: '/company/' + id
   })
 }
+
+export const delRoleById = (id) => {
+  return request({
+    method: 'delete',
+    url: '/sys/role/' + id
+  })
+}
