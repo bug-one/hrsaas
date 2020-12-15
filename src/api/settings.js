@@ -6,3 +6,9 @@ export const getRoleList = (params) => {
     params
   })
 }
+
+export const getCompanyDetail = (id) => {
+  return request({
+    url: '/company/' + id
+  })
+}

@@ -67,7 +67,8 @@
 </template>
 
 <script>
-import { getRoleList } from '@/api/settings'
+import { getCompanyDetail, getRoleList } from '@/api/settings'
+import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
@@ -78,6 +79,21 @@ export default {
         pagesize: 5
       },
       total: 0
+    }
+  },
+  computed: {
+    ...mapGetters(['companyId'])
+  },
+  watch: {
+    companyId: {
+      handler() {
+        if (this.companyId) {
+          getCompanyDetail(this.companyId).then(res => {
+            console.log(res)
+          })
+        }
+      },
+      immediate: true
     }
   },
   created() {
