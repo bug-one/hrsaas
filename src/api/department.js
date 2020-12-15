@@ -26,3 +26,11 @@ export const getDepartmentsDetail = function(id) {
     url: '/company/department/' + id
   })
 }
+
+export const editDepartments = function(data) {
+  return request({
+    method: 'put',
+    url: '/company/department/' + data.id,
+    data
+  })
+}

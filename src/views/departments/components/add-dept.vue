@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { addDepartments, getDepartments, getDepartmentsDetail } from '@/api/department'
+import { addDepartments, editDepartments, getDepartments, getDepartmentsDetail } from '@/api/department'
 import { getEmployeeSimple } from '@/api/employee'
 export default {
   props: {
@@ -97,8 +97,14 @@ export default {
       try {
         const isValid = await this.$refs.elForm.validate()
         if (isValid) {
-          this.formData.pid = this.node.id
-          await addDepartments(this.formData)
+          if (this.formData.id) {
+            await editDepartments(this.formData)
+            this.$message.success('修改成功')
+          } else {
+            this.formData.pid = this.node.id
+            await addDepartments(this.formData)
+            this.$message.success('新增成功')
+          }
           this.btnCancel()
           this.$emit('getDepartment')
         }
