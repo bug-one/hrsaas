@@ -44,6 +44,10 @@ export default {
       const { depts } = await getDepartments()
       depts.some(item => item.name === this.formData.name && item.pid === this.node.id) ? callback(new Error('同一部门下，部门名称不能重复')) : callback()
     }
+    const validateCode = async(rules, value, callback) => {
+      const { depts } = await getDepartments()
+      depts.some(item => item.code === value && value) ? callback(new Error('不能有重复的编码')) : callback()
+    }
     return {
       formData: {
         name: '',
@@ -59,7 +63,8 @@ export default {
         ],
         code: [
           { required: true, trigger: 'blur', message: '部门编码不能为空' },
-          { min: 1, max: 50, trigger: 'blur', message: '部门编码必须为1-50个字符' }
+          { min: 1, max: 50, trigger: 'blur', message: '部门编码必须为1-50个字符' },
+          { trigger: 'blur', validator: validateCode }
 
         ],
         introduce: [
