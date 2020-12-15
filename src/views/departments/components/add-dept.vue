@@ -108,6 +108,7 @@ export default {
     },
     btnCancel() {
       this.$emit('update:visible', false)
+      this.$refs.elForm.resetFields()
     }
   }
 }
