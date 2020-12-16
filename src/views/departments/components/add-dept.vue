@@ -36,7 +36,7 @@
 
 <script>
 import { addDepartments, editDepartments, getDepartments, getDepartmentsDetail } from '@/api/department'
-import { getEmployeeSimple } from '@/api/employee'
+import { getEmployeeSimple } from '@/api/employees'
 export default {
   props: {
     visible: {

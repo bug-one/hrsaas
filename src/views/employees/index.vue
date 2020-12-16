@@ -2,21 +2,25 @@
   <div class="dashboard-container">
     <div class="app-container">
       <pageTools>
-        <span slot="before">共66条数据</span>
+        <span slot="before">共{{ pageSetting.total }}条数据</span>
         <template slot="after">
           <el-button size="small" type="warning">导入</el-button>
           <el-button size="small" type="danger">导出</el-button>
           <el-button size="small" type="primary">新增员工</el-button>
         </template>
       </pageTools>
-      <el-table border>
-        <el-table-column label="序号" sortable="" />
-        <el-table-column label="姓名" sortable="" />
-        <el-table-column label="工号" sortable="" />
-        <el-table-column label="聘用形式" sortable="" />
-        <el-table-column label="部门" sortable="" />
-        <el-table-column label="入职时间" sortable="" />
-        <el-table-column label="账户状态" sortable="" />
+      <el-table :data="userList" border>
+        <el-table-column label="序号" sortable="">
+          <template slot-scope="scope">
+            {{ scope.$index + 1 }}
+          </template>
+        </el-table-column>
+        <el-table-column label="姓名" prop="username" sortable="" />
+        <el-table-column label="工号" prop="workNumber" sortable="" />
+        <el-table-column label="聘用形式" prop="formOfEmployment" sortable="" />
+        <el-table-column label="部门" prop="departmentName" sortable="" />
+        <el-table-column label="入职时间" prop="timeOfEntry" sortable="" />
+        <el-table-column label="账户状态" prop="enableState" sortable="" />
         <el-table-column label="操作" sortable="" fixed="right" width="280">
           <template>
             <el-button type="text" size="small">查看</el-button>
@@ -30,8 +34,12 @@
       </el-table>
       <el-row type="flex" justify="end" align="middle" style="height: 60px;">
         <el-pagination
-          layout="prev, pager, next"
-          :total="80"
+          layout="prev, pager, next , sizes"
+          :total="pageSetting.total"
+          :page-sizes="[5,10,20,50]"
+          :page-size="10"
+          @current-change="currentChange"
+          @size-change="sizeChange"
         />
       </el-row>
     </div>
@@ -39,8 +47,36 @@
 </template>
 
 <script>
+import { getUserList } from '@/api/employees'
 export default {
-
+  data() {
+    return {
+      pageSetting: {
+        page: 1,
+        size: 10,
+        total: 0
+      },
+      userList: []
+    }
+  },
+  created() {
+    this.getUserList()
+  },
+  methods: {
+    async getUserList() {
+      const { rows, total } = await getUserList(this.pageSetting)
+      this.pageSetting.total = total
+      this.userList = rows
+    },
+    currentChange(page) {
+      this.pageSetting.page = page
+      this.getUserList(this.pageSetting)
+    },
+    sizeChange(size) {
+      this.pageSetting.size = size
+      this.getUserList(this.pageSetting)
+    }
+  }
 }
 </script>
 
