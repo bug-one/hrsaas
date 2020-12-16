@@ -19,7 +19,7 @@
               <el-table-column prop="description" label="描述" />
               <el-table-column label="操作" width="200px">
                 <template slot-scope="scope">
-                  <el-button size="small" type="primary" plain>编辑角色</el-button>
+                  <el-button size="small" type="primary" plain @click="editRole(scope.row.id)">编辑角色</el-button>
                   <el-button size="small" type="primary" plain @click="delRole(scope.row.id)">删除角色</el-button>
                 </template>
               </el-table-column>
@@ -63,9 +63,10 @@
         </el-tabs>
       </el-card>
       <el-dialog
-        title="新增角色"
+        :title="handleTitle"
         :visible.sync="showDialog"
         width="50%"
+        @close="btnCancel"
       >
         <el-form ref="roleForm" :model="roleFormData" label-width="80px" :rules="rules">
           <el-form-item label="角色名称" prop="name">
@@ -86,7 +87,7 @@
 </template>
 
 <script>
-import { getCompanyDetail, getRoleList, delRoleById, addRole } from '@/api/settings'
+import { getCompanyDetail, getRoleList, delRoleById, addRole, getRoleDetail } from '@/api/settings'
 import { mapGetters } from 'vuex'
 export default {
   data() {
@@ -122,7 +123,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['companyId'])
+    ...mapGetters(['companyId']),
+    handleTitle() {
+      return this.roleFormData.id ? '编辑角色' : '新增角色'
+    }
   },
   watch: {
     companyId: {
@@ -192,7 +196,16 @@ export default {
     },
     btnCancel() {
       this.showDialog = false
+      this.roleFormData = {
+        name: '',
+        description: ''
+      }
       this.$refs.roleForm.resetFields()
+    },
+    async editRole(id) {
+      const roleDetail = await getRoleDetail(id)
+      this.roleFormData = roleDetail
+      this.showDialog = true
     }
   }
 }
