@@ -2,7 +2,7 @@
   <el-dialog :title="title" :visible="visible" @close="btnCancel">
     <!-- 表单组件  el-form   label-width设置label的宽度   -->
     <!-- 匿名插槽 -->
-    <el-form ref="elForm" label-width="120px" :model="formData" :rules="rules">
+    <el-form v-if="visible" ref="elForm" label-width="120px" :model="formData" :rules="rules">
       <el-form-item label="部门名称" prop="name">
         <el-input v-model="formData.name" style="width:80%" placeholder="1-50个字符" />
       </el-form-item>
