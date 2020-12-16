@@ -12,7 +12,7 @@
       <el-table :data="userList" border>
         <el-table-column label="序号" sortable="">
           <template slot-scope="scope">
-            {{ scope.$index + 1 }}
+            {{ (scope.$index + 1) + (pageSetting.page - 1) * pageSetting.size }}
           </template>
         </el-table-column>
         <el-table-column label="姓名" prop="username" sortable="" />
