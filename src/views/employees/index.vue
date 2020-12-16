@@ -12,7 +12,7 @@
       <el-table :data="userList" border>
         <el-table-column label="序号" sortable="">
           <template slot-scope="scope">
-            {{ (scope.$index + 1) + (pageSetting.page - 1) * pageSetting.size }}
+            {{ (scope.$index + 1) + (asyncPageSetting.page - 1) * asyncPageSetting.size }}
           </template>
         </el-table-column>
         <el-table-column label="姓名" prop="username" sortable="" />
@@ -56,6 +56,10 @@ export default {
         size: 10,
         total: 0
       },
+      asyncPageSetting: {
+        page: 1,
+        size: 10
+      },
       userList: []
     }
   },
@@ -68,13 +72,15 @@ export default {
       this.pageSetting.total = total
       this.userList = rows
     },
-    currentChange(page) {
+    async currentChange(page) {
       this.pageSetting.page = page
-      this.getUserList(this.pageSetting)
+      await this.getUserList(this.pageSetting)
+      this.asyncPageSetting.page = page
     },
-    sizeChange(size) {
+    async sizeChange(size) {
       this.pageSetting.size = size
-      this.getUserList(this.pageSetting)
+      await this.getUserList(this.pageSetting)
+      this.asyncPageSetting.size = size
     }
   }
 }
