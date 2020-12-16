@@ -34,9 +34,10 @@ export const getRoleDetail = (id) => {
   })
 }
 
-export const editRole = (id) => {
+export const editRole = (data) => {
   return request({
     method: 'put',
-    url: '/sys/role/' + id
+    url: '/sys/role/' + data.id,
+    data
   })
 }

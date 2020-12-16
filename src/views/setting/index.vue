@@ -87,7 +87,7 @@
 </template>
 
 <script>
-import { getCompanyDetail, getRoleList, delRoleById, addRole, getRoleDetail } from '@/api/settings'
+import { getCompanyDetail, getRoleList, delRoleById, addRole, getRoleDetail, editRole } from '@/api/settings'
 import { mapGetters } from 'vuex'
 export default {
   data() {
@@ -185,8 +185,13 @@ export default {
       try {
         const isValid = await this.$refs.roleForm.validate()
         if (isValid) {
-          await addRole(this.roleFormData)
-          this.$message.success('新增成功')
+          if (this.roleFormData.id) {
+            await editRole(this.roleFormData)
+            this.$message.success('编辑成功')
+          } else {
+            await addRole(this.roleFormData)
+            this.$message.success('新增成功')
+          }
           this.btnCancel()
           this.getRoleList()
         }
@@ -203,9 +208,13 @@ export default {
       this.$refs.roleForm.resetFields()
     },
     async editRole(id) {
-      const roleDetail = await getRoleDetail(id)
-      this.roleFormData = roleDetail
-      this.showDialog = true
+      try {
+        const roleDetail = await getRoleDetail(id)
+        this.roleFormData = roleDetail
+        this.showDialog = true
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 }
