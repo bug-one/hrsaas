@@ -9,7 +9,7 @@ const service = axios.create({
   timeout: 5000
 })
 
-const TimeOut = 1800
+const TimeOut = 10000
 
 service.interceptors.request.use(config => {
   if (store.getters.token) {

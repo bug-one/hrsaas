@@ -140,7 +140,7 @@ export default {
   },
   methods: {
     getRoleList() {
-      getRoleList(this.pageSetting).then(res => {
+      return getRoleList(this.pageSetting).then(res => {
         this.roleList = res.rows
         this.total = res.total
       })
@@ -165,7 +165,11 @@ export default {
           type: 'success',
           message: '删除成功!'
         })
-        this.getRoleList()
+        await this.getRoleList()
+        if (this.total % this.pageSetting.pagesize === 0) {
+          this.pageSetting.page--
+          this.getRoleList()
+        }
       } catch (error) {
         console.log(error)
       }
