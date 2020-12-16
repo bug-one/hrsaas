@@ -1,14 +1,18 @@
 <template>
-  <el-card class="tree-card">
-    <el-divider content-position="left">组织架构</el-divider>
+  <div class="dashboard-container">
+    <div class="app-container">
+      <el-card class="tree-card">
+        <el-divider content-position="left">组织架构</el-divider>
 
-    <treeTools :data="companyTitle" :is-root="true" />
+        <treeTools :data="companyTitle" :is-root="true" />
 
-    <el-tree :data="companyTree" :props="defaultProps" default-expand-all>
-      <treeTools slot-scope="scope" :data="scope.data" @addDepartment="addDepartment" @delDepartment="getDepartments" @editDepartment="editDepartment" />
-    </el-tree>
-    <addDept ref="handelDept" :visible.sync="visible" :node="node" @getDepartment="getDepartments" />
-  </el-card>
+        <el-tree :data="companyTree" :props="defaultProps" default-expand-all>
+          <treeTools slot-scope="scope" :data="scope.data" @addDepartment="addDepartment" @delDepartment="getDepartments" @editDepartment="editDepartment" />
+        </el-tree>
+        <addDept ref="handelDept" :visible.sync="visible" :node="node" @getDepartment="getDepartments" />
+      </el-card>
+    </div>
+  </div>
 </template>
 
 <script>
