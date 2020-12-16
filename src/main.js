@@ -37,6 +37,9 @@ import { imageerror } from '@/directives'
 
 Vue.directive('imageerror', imageerror)
 
+import components from '@/components'
+Vue.use(components)
+
 Vue.config.productionTip = false
 
 new Vue({
