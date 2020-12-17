@@ -17,7 +17,7 @@
         </el-table-column>
         <el-table-column label="姓名" prop="username" sortable="" />
         <el-table-column label="工号" prop="workNumber" sortable="" />
-        <el-table-column label="聘用形式" prop="formOfEmployment" sortable="" />
+        <el-table-column label="聘用形式" prop="formOfEmployment" sortable="" :formatter="formatterEnableState" />
         <el-table-column label="部门" prop="departmentName" sortable="" />
         <el-table-column label="入职时间" prop="timeOfEntry" sortable="" />
         <el-table-column label="账户状态" prop="enableState" sortable="" />
@@ -48,6 +48,7 @@
 
 <script>
 import { getUserList } from '@/api/employees'
+import EmploymentEnum from '@/api/constant/employees'
 export default {
   data() {
     return {
@@ -81,6 +82,14 @@ export default {
       this.pageSetting.size = size
       await this.getUserList(this.pageSetting)
       this.asyncPageSetting.size = size
+    },
+    formatterEnableState(row, column, cellValue, index) {
+      EmploymentEnum.hireType.forEach(item => {
+        if (cellValue === item.id) {
+          cellValue = item.value
+        }
+      })
+      return cellValue
     }
   }
 }
