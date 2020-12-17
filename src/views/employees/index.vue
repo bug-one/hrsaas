@@ -84,12 +84,8 @@ export default {
       this.asyncPageSetting.size = size
     },
     formatterEnableState(row, column, cellValue, index) {
-      EmploymentEnum.hireType.forEach(item => {
-        if (cellValue === item.id) {
-          cellValue = item.value
-        }
-      })
-      return cellValue
+      const obj = EmploymentEnum.hireType.find(item => cellValue === item.id)
+      return obj.value || '不存在的数据'
     }
   }
 }
