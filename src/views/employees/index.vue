@@ -21,7 +21,7 @@
         <el-table-column label="部门" prop="departmentName" sortable="" />
         <el-table-column label="入职时间" prop="timeOfEntry" sortable="">
           <template slot-scope="scope">
-            {{ scope.row.timeOfEntry | dateFilter }}
+            {{ scope.row.timeOfEntry | formatDate }}
           </template>
         </el-table-column>
         <el-table-column label="账户状态" prop="enableState" sortable="" />
@@ -54,11 +54,6 @@
 import { getUserList } from '@/api/employees'
 import EmploymentEnum from '@/api/constant/employees'
 export default {
-  filters: {
-    dateFilter(data) {
-      return data ? data.split('T')[0] : '未知日期'
-    }
-  },
   data() {
     return {
       pageSetting: {

@@ -40,6 +40,12 @@ Vue.directive('imageerror', imageerror)
 import components from '@/components'
 Vue.use(components)
 
+import * as filters from '@/filters'
+
+Object.keys(filters).forEach(item => {
+  Vue.filter(item, filters[item])
+})
+
 Vue.config.productionTip = false
 
 new Vue({
