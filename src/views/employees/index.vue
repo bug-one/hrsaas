@@ -85,7 +85,7 @@ export default {
     },
     formatterEnableState(row, column, cellValue, index) {
       const obj = EmploymentEnum.hireType.find(item => cellValue === item.id)
-      return obj.value || '不存在的数据'
+      return obj ? obj.value : '不存在的数据'
     }
   }
 }
