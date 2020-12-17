@@ -19,7 +19,11 @@
         <el-table-column label="工号" prop="workNumber" sortable="" />
         <el-table-column label="聘用形式" prop="formOfEmployment" sortable="" :formatter="formatterEnableState" />
         <el-table-column label="部门" prop="departmentName" sortable="" />
-        <el-table-column label="入职时间" prop="timeOfEntry" sortable="" />
+        <el-table-column label="入职时间" prop="timeOfEntry" sortable="">
+          <template slot-scope="scope">
+            {{ scope.row.timeOfEntry | dateFilter }}
+          </template>
+        </el-table-column>
         <el-table-column label="账户状态" prop="enableState" sortable="" />
         <el-table-column label="操作" sortable="" fixed="right" width="280">
           <template>
@@ -50,6 +54,11 @@
 import { getUserList } from '@/api/employees'
 import EmploymentEnum from '@/api/constant/employees'
 export default {
+  filters: {
+    dateFilter(data) {
+      return data ? data.split('T')[0] : '未知日期'
+    }
+  },
   data() {
     return {
       pageSetting: {
@@ -85,7 +94,7 @@ export default {
     },
     formatterEnableState(row, column, cellValue, index) {
       const obj = EmploymentEnum.hireType.find(item => cellValue === item.id)
-      return obj ? obj.value : '不存在的数据'
+      return obj ? obj.value : '不存在的形式'
     }
   }
 }
