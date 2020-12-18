@@ -5,7 +5,7 @@
         <span slot="before">共{{ pageSetting.total }}条数据</span>
         <template slot="after">
           <el-button size="small" type="warning" @click="$router.push('/import')">导入</el-button>
-          <el-button size="small" type="danger">导出</el-button>
+          <el-button size="small" type="danger" @click="exportData">导出</el-button>
           <el-button size="small" type="primary" @click="showDialog = true">新增员工</el-button>
         </template>
       </pageTools>
@@ -126,6 +126,17 @@ export default {
           })
         }
       }
+    },
+    exportData() {
+      import('@/vendor/Export2Excel.js').then(excel => {
+        excel.export_json_to_excel({
+          // header: tHeader, // 表头 必填
+          // data, // 具体数据 必填
+          // filename: 'excel-list', // 非必填
+          // autoWidth: true, // 非必填
+          // bookType: 'xlsx' // 非必填
+        })
+      })
     }
   }
 }
