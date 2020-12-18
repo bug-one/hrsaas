@@ -63,6 +63,7 @@
 import { delEmployee, getUserList } from '@/api/employees'
 import EmploymentEnum from '@/api/constant/employees'
 import addEmployee from '@/views/employees/components/add-employee'
+import { formatDate } from '@/filters'
 export default {
   components: {
     addEmployee
@@ -148,6 +149,9 @@ export default {
         tHeader.forEach(element => {
           for (const key in item) {
             if (key === headersEnum[element]) {
+              if (key === 'timeOfEntry' || key === 'correctionTime') {
+                item[key] = formatDate(item[key])
+              }
               arr.push(item[key])
             }
           }
