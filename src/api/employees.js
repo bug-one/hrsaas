@@ -12,3 +12,10 @@ export const getUserList = (params) => {
     params
   })
 }
+
+export const delEmployee = (id) => {
+  return request({
+    method: 'delete',
+    url: '/sys/user/' + id
+  })
+}

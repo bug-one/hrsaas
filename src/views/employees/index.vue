@@ -34,13 +34,13 @@
           </template>
         </el-table-column>
         <el-table-column label="操作" sortable="" fixed="right" width="280">
-          <template>
+          <template slot-scope="{row}">
             <el-button type="text" size="small">查看</el-button>
             <el-button type="text" size="small">转正</el-button>
             <el-button type="text" size="small">调岗</el-button>
             <el-button type="text" size="small">离职</el-button>
             <el-button type="text" size="small">角色</el-button>
-            <el-button type="text" size="small">删除</el-button>
+            <el-button type="text" size="small" @click="delEmployee(row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import { getUserList } from '@/api/employees'
+import { delEmployee, getUserList } from '@/api/employees'
 import EmploymentEnum from '@/api/constant/employees'
 export default {
   data() {
@@ -98,6 +98,28 @@ export default {
     formatterEnableState(row, column, cellValue, index) {
       const obj = EmploymentEnum.hireType.find(item => cellValue === item.id)
       return obj ? obj.value : '不存在的形式'
+    },
+    async delEmployee(id) {
+      try {
+        await this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+        await delEmployee(id)
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        })
+        this.getUserList()
+      } catch (error) {
+        if (error === 'cancel') {
+          this.$message({
+            type: 'info',
+            message: '你成功挽救了一个员工!'
+          })
+        }
+      }
     }
   }
 }
