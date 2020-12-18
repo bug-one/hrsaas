@@ -64,6 +64,7 @@ import { delEmployee, getUserList } from '@/api/employees'
 import EmploymentEnum from '@/api/constant/employees'
 import addEmployee from '@/views/employees/components/add-employee'
 import { formatDate } from '@/filters'
+import employeesEnum from '@/api/constant/employees'
 export default {
   components: {
     addEmployee
@@ -151,6 +152,10 @@ export default {
             if (key === headersEnum[element]) {
               if (key === 'timeOfEntry' || key === 'correctionTime') {
                 item[key] = formatDate(item[key])
+              }
+              if (key === 'formOfEmployment') {
+                const obj = employeesEnum.hireType.find(Enum => Enum.id === item[key])
+                item[key] = obj ? obj.value : '不存在的形式'
               }
               arr.push(item[key])
             }
