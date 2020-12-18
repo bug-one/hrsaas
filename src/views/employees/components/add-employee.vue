@@ -77,6 +77,17 @@ export default {
         console.log(error)
       }
     }
+    const checkTime = (rule, value, callback) => {
+      if (this.formData.timeOfEntry && this.formData.correctionTime) {
+        if (this.formData.timeOfEntry.getTime() > this.formData.correctionTime.getTime()) {
+          callback(new Error('转正时间不能大于入职时间'))
+        } else {
+          callback()
+        }
+      } else {
+        callback()
+      }
+    }
     return {
       formData: {
         username: '',
@@ -108,7 +119,11 @@ export default {
           { trigger: 'change', validator: validateDepartment }
         ],
         timeOfEntry: [
-          { required: true, trigger: 'blur', message: '入职时间不能为空' }
+          { required: true, trigger: 'change', message: '入职时间不能为空' },
+          { trigger: 'change', validator: checkTime }
+        ],
+        correctionTime: [
+          { trigger: 'change', validator: checkTime }
         ]
       },
       departmentData: [],
