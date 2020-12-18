@@ -127,15 +127,17 @@ export default {
         }
       }
     },
-    exportData() {
-      import('@/vendor/Export2Excel.js').then(excel => {
-        excel.export_json_to_excel({
-          // header: tHeader, // 表头 必填
-          // data, // 具体数据 必填
-          // filename: 'excel-list', // 非必填
-          // autoWidth: true, // 非必填
-          // bookType: 'xlsx' // 非必填
-        })
+    async exportData() {
+      const tHeader = ['测试表头1', '测试表头2']
+      const data = [['内容1', '内容2'], ['内容3', '内容4']]
+      const excel = await import('@/vendor/Export2Excel.js')
+      excel.export_json_to_excel({
+        header: tHeader, // 表头 必填
+        data, // 具体数据 必填
+        filename: 'excel-list', // 非必填
+        autoWidth: true, // 非必填
+        bookType: 'xlsx' // 非必填
+
       })
     }
   }
