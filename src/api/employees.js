@@ -28,3 +28,11 @@ export const addEmployee = (data) => {
 
   })
 }
+
+export const importEmployees = (data) => {
+  return request({
+    method: 'post',
+    url: '/sys/user/batch',
+    data
+  })
+}
