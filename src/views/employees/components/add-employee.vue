@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="新增员工" :visible="showDialog" @click.native="departmentData = []">
+  <el-dialog title="新增员工" :visible="showDialog" @click.native="departmentData = []" @close="btnCancel">
     <el-form ref="form" label-width="120px" :model="formData" :rules="rules">
       <el-form-item label="姓名" prop="username">
         <el-input v-model="formData.username" style="width:50%" placeholder="请输入姓名" />
@@ -38,7 +38,7 @@
     <template v-slot:footer>
       <el-row type="flex" justify="center">
         <el-col :span="6">
-          <el-button size="small">取消</el-button>
+          <el-button size="small" @click="btnCancel">取消</el-button>
           <el-button type="primary" size="small" @click="confirm">确定</el-button>
         </el-col>
       </el-row>
@@ -50,6 +50,7 @@
 import { getDepartments } from '@/api/department'
 import { convertTreeData } from '@/utils'
 import employees from '@/api/constant/employees'
+import { addEmployee } from '@/api/employees'
 export default {
   props: {
     showDialog: {
@@ -93,13 +94,14 @@ export default {
         ],
         mobile: [
           { required: true, trigger: 'blur', message: '手机号不能为空' },
-          { pattern: /^1[3-9]\d{9}/, trigger: 'blur', message: '手机格式不正确' }
+          { pattern: /^1[3-9]\d{9}$/, trigger: 'blur', message: '手机格式不正确' }
         ],
         formOfEmployment: [
           { required: true, trigger: 'change', message: '聘用形式不能为空' }
         ],
         workNumber: [
-          { required: true, trigger: 'blur', message: '工号不能为空' }
+          { required: true, trigger: 'blur', message: '工号不能为空' },
+          { pattern: /^\d{6}$/, trigger: 'blur', message: '工号位6位数数字' }
         ],
         departmentName: [
           { required: true, trigger: 'change', message: '部门名称不能为空' },
@@ -133,11 +135,18 @@ export default {
       try {
         const isValid = await this.$refs.form.validate()
         if (isValid) {
-          console.log('验证成功')
+          await addEmployee(this.formData)
+          this.$message.success('新增成功')
+          this.btnCancel()
+          this.$emit('getUserList')
         }
       } catch (error) {
         console.log(error)
       }
+    },
+    btnCancel() {
+      this.$refs.form.resetFields()
+      this.$emit('update:showDialog', false)
     }
   }
 }

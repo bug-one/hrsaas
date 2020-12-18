@@ -54,7 +54,7 @@
           @size-change="sizeChange"
         />
       </el-row>
-      <addEmployee :show-dialog="showDialog" />
+      <addEmployee :show-dialog.sync="showDialog" @getUserList="getUserList" />
     </div>
   </div>
 </template>
