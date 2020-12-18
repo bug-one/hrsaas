@@ -8,7 +8,7 @@
         <el-input v-model="formData.mobile" style="width:50%" placeholder="请输入手机号" />
       </el-form-item>
       <el-form-item label="入职时间" prop="timeOfEntry">
-        <el-date-picker v-model="formData.timeOfEntry" style="width:50%" placeholder="请选择入职时间" />
+        <el-date-picker v-model="formData.timeOfEntry" style="width:50%" placeholder="请选择入职时间" @change="checkTowTimeData" />
       </el-form-item>
       <el-form-item label="聘用形式" prop="formOfEmployment">
         <el-select v-model="formData.formOfEmployment" style="width:50%" placeholder="请选择">
@@ -30,7 +30,7 @@
         </div>
       </el-form-item>
       <el-form-item label="转正时间" prop="correctionTime">
-        <el-date-picker v-model="formData.correctionTime" style="width:50%" placeholder="请选择转正时间" />
+        <el-date-picker v-model="formData.correctionTime" style="width:50%" placeholder="请选择转正时间" @change="checkTowTimeData" />
       </el-form-item>
     </el-form>
 
@@ -162,6 +162,9 @@ export default {
     btnCancel() {
       this.$refs.form.resetFields()
       this.$emit('update:showDialog', false)
+    },
+    checkTowTimeData() {
+      this.$refs.form.validateField(['timeOfEntry', 'correctionTime'])
     }
   }
 }
