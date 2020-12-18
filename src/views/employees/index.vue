@@ -6,7 +6,7 @@
         <template slot="after">
           <el-button size="small" type="warning">导入</el-button>
           <el-button size="small" type="danger">导出</el-button>
-          <el-button size="small" type="primary">新增员工</el-button>
+          <el-button size="small" type="primary" @click="showDialog = true">新增员工</el-button>
         </template>
       </pageTools>
       <el-table :data="userList" border>
@@ -54,6 +54,7 @@
           @size-change="sizeChange"
         />
       </el-row>
+      <addEmployee :show-dialog="showDialog" />
     </div>
   </div>
 </template>
@@ -61,7 +62,11 @@
 <script>
 import { delEmployee, getUserList } from '@/api/employees'
 import EmploymentEnum from '@/api/constant/employees'
+import addEmployee from '@/views/employees/components/add-employee'
 export default {
+  components: {
+    addEmployee
+  },
   data() {
     return {
       pageSetting: {
@@ -73,7 +78,8 @@ export default {
         page: 1,
         size: 10
       },
-      userList: []
+      userList: [],
+      showDialog: false
     }
   },
   created() {
