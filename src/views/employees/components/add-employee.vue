@@ -1,6 +1,6 @@
 <template>
   <el-dialog title="新增员工" :visible="showDialog">
-    <el-form label-width="120px" :model="formData" :rules="rules">
+    <el-form ref="form" label-width="120px" :model="formData" :rules="rules">
       <el-form-item label="姓名" prop="username">
         <el-input v-model="formData.username" style="width:50%" placeholder="请输入姓名" />
       </el-form-item>
@@ -17,7 +17,10 @@
         <el-input v-model="formData.workNumber" style="width:50%" placeholder="请输入工号" />
       </el-form-item>
       <el-form-item label="部门" prop="departmentName">
-        <el-input v-model="formData.departmentName" style="width:50%" placeholder="请选择部门" />
+        <el-input v-model="formData.departmentName" style="width:50%" placeholder="请选择部门" @focus="getDepartments" />
+        <div v-if="departmentData.length > 0" class="deptsWrapper" style="width:50%">
+          <el-tree :data="departmentData" :props="defaultProps" default-expand-all class="tree" @node-click="handelDepartment" />
+        </div>
       </el-form-item>
       <el-form-item label="转正时间" prop="correctionTime">
         <el-date-picker v-model="formData.correctionTime" style="width:50%" placeholder="请选择转正时间" />
@@ -29,7 +32,7 @@
       <el-row type="flex" justify="center">
         <el-col :span="6">
           <el-button size="small">取消</el-button>
-          <el-button type="primary" size="small">确定</el-button>
+          <el-button type="primary" size="small" @click="confirm">确定</el-button>
         </el-col>
       </el-row>
     </template>
@@ -37,6 +40,8 @@
 </template>
 
 <script>
+import { getDepartments } from '@/api/department'
+import { convertTreeData } from '@/utils'
 export default {
   props: {
     showDialog: {
@@ -45,6 +50,24 @@ export default {
     }
   },
   data() {
+    const validateDepartment = async(rule, value, callback) => {
+      try {
+        const { depts } = await getDepartments()
+        let isExist = false
+        depts.forEach(item => {
+          if (item.name === value) {
+            isExist = true
+          }
+        })
+        if (isExist) {
+          callback()
+        } else {
+          callback(new Error('此部门不存在'))
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
     return {
       formData: {
         username: '',
@@ -71,11 +94,40 @@ export default {
           { required: true, trigger: 'blur', message: '工号不能为空' }
         ],
         departmentName: [
-          { required: true, trigger: 'blur', message: '部门名称不能为空' }
+          { required: true, trigger: 'change', message: '部门名称不能为空' },
+          { trigger: 'change', validator: validateDepartment }
         ],
         timeOfEntry: [
           { required: true, trigger: 'blur', message: '入职时间不能为空' }
         ]
+      },
+      departmentData: [],
+      defaultProps: {
+        children: 'children',
+        label: 'name'
+      }
+    }
+  },
+  methods: {
+    async getDepartments() {
+      const { depts } = await getDepartments()
+      this.departmentData = convertTreeData(depts, '')
+    },
+    handelDepartment(node) {
+      if (!node.children) {
+        this.formData.departmentName = node.name
+        this.departmentData = []
+      }
+    },
+    async confirm() {
+      this.departmentData = []
+      try {
+        const isValid = await this.$refs.form.validate()
+        if (isValid) {
+          console.log('验证成功')
+        }
+      } catch (error) {
+        console.log(error)
       }
     }
   }
@@ -85,5 +137,18 @@ export default {
 <style lang="scss" scoped>
  ::v-deep .el-dialog__header {
     background: #ff69a7;
+}
+.deptsWrapper{
+    position: absolute;
+    z-index: 1;
+    height: 160px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    overflow: hidden;
+    .tree{
+        width: 120%;
+    height: 160px;
+    overflow-y: scroll;
+    }
 }
 </style>
