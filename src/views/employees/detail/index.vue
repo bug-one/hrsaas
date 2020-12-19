@@ -7,10 +7,10 @@
             <el-row type="flex" justify="center" style="padding-right: 300px">
               <el-form label-width="100px">
                 <el-form-item label="姓名">
-                  <el-input />
+                  <el-input v-model="formData.username" placeholder="姓名" />
                 </el-form-item>
                 <el-form-item label="密码">
-                  <el-input />
+                  <el-input v-model="formData.newPassWord" placeholder="密码" type="password" />
                 </el-form-item>
                 <el-form-item>
                   <el-button type="primary">更新</el-button>
@@ -32,10 +32,24 @@
 </template>
 
 <script>
+import { getUserInfoById } from '@/api/user'
 export default {
   data() {
     return {
-      activeName: 'account'
+      activeName: 'account',
+      userId: this.$route.params.id,
+      formData: {
+        username: '',
+        newPassWord: ''
+      }
+    }
+  },
+  created() {
+    this.getUserInfo()
+  },
+  methods: {
+    async getUserInfo() {
+      this.formData = await getUserInfoById(this.userId)
     }
   }
 }
