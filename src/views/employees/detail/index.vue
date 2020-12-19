@@ -20,10 +20,11 @@
             </el-row>
           </el-tab-pane>
           <el-tab-pane label="个人详情" name="detail">
-            个人详情
+            <component :is="jobInfoName" />
           </el-tab-pane>
           <el-tab-pane label="岗位信息" name="job">
-            岗位信息
+            <component :is="userInfoName" />
+
           </el-tab-pane>
         </el-tabs>
       </el-card>
@@ -34,7 +35,13 @@
 <script>
 import { getUserInfoById } from '@/api/user'
 import { saveUserDetailById } from '@/api/employees'
+import JobInfo from '@/views/employees/components/job-info'
+import UserInfo from '@/views/employees/components/user-info'
 export default {
+  components: {
+    JobInfo,
+    UserInfo
+  },
   data() {
     return {
       activeName: 'account',
@@ -46,7 +53,9 @@ export default {
       rules: {
         username: [{ required: true, trigger: 'blur', message: '姓名不能为空' }],
         newPassWord: [{ required: true, trigger: 'blur', message: '密码不能为空' }]
-      }
+      },
+      jobInfoName: 'JobInfo',
+      userInfoName: 'UserInfo'
     }
   },
   created() {
