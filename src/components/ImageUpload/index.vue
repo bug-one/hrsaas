@@ -4,7 +4,9 @@
       <i class="el-icon-plus" />
     </el-upload>
     <el-dialog :visible.sync="showDialog" title="图片预览">
-      <img :src="imgUrl" alt="">
+      <el-row type="flex" justify="center">
+        <img :src="imgUrl" alt="">
+      </el-row>
     </el-dialog>
   </div>
 </template>
