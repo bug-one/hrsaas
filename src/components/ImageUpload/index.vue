@@ -64,11 +64,17 @@ export default {
         onProgress: function(progressData) {
           console.log(JSON.stringify(progressData))
         }
-      }, function(err, data) {
-        console.log(err || data)
+      }, (err, data) => {
+        if (!err || data) {
+          console.log(data)
+          this.fileList = this.fileList.map(item => {
+            if (item.uid === params.file.uid) {
+              item.url = 'http://' + data.Location
+            }
+            return item
+          })
+        }
       })
-      console.log('自定义上传↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓')
-      console.log(params)
     }
   }
 }
