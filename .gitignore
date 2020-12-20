@@ -16,3 +16,4 @@ tests/**/coverage/
 *.sln
 debug.log
 debug.log
+src/private-config.js

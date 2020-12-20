@@ -12,6 +12,11 @@
 </template>
 
 <script>
+import COS from 'cos-js-sdk-v5'
+import { cloudConfig } from '@/private-config'
+const cos = new COS({
+  ...cloudConfig
+})
 export default {
   data() {
     return {
@@ -50,6 +55,18 @@ export default {
       return true
     },
     upLoadImage(params) {
+      cos.putObject({
+        Bucket: 'bugone-1304560164', /* 必须 */
+        Region: 'ap-guangzhou', /* 存储桶所在地域，必须字段 */
+        Key: params.file.name, /* 必须 */
+        StorageClass: 'STANDARD',
+        Body: params.file, // 上传文件对象
+        onProgress: function(progressData) {
+          console.log(JSON.stringify(progressData))
+        }
+      }, function(err, data) {
+        console.log(err || data)
+      })
       console.log('自定义上传↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓')
       console.log(params)
     }
