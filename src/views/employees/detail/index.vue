@@ -20,10 +20,10 @@
             </el-row>
           </el-tab-pane>
           <el-tab-pane label="个人详情" name="detail">
-            <component :is="jobInfoName" />
+            <component :is="userInfoName" />
           </el-tab-pane>
           <el-tab-pane label="岗位信息" name="job">
-            <component :is="userInfoName" />
+            <component :is="jobInfoName" />
 
           </el-tab-pane>
         </el-tabs>
