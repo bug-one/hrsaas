@@ -3,6 +3,7 @@
     <el-upload action="#" list-type="picture-card" :file-list="fileList" :on-preview="preview" :class="{'disable':disable}" :on-change="onChange" :http-request="upLoadImage" :on-remove="onRemove" :before-upload="beforeUpload">
       <i class="el-icon-plus" />
     </el-upload>
+    <el-progress v-if="showProgress" :percentage="percent" style="width:200px" status="success" />
     <el-dialog :visible.sync="showDialog" title="图片预览">
       <el-row type="flex" justify="center">
         <img :src="imgUrl" alt="">
@@ -22,7 +23,9 @@ export default {
     return {
       fileList: [],
       imgUrl: '',
-      showDialog: false
+      showDialog: false,
+      percent: 0,
+      showProgress: false
     }
   },
   computed: {
@@ -36,6 +39,7 @@ export default {
       this.showDialog = true
     },
     onChange(file, fileList) {
+      console.log('onchange')
       this.fileList = fileList
     },
     onRemove(file, fileList) {
@@ -52,6 +56,8 @@ export default {
         this.$message.error('图片大小不能超过1M')
         return false
       }
+      console.log('beforeUpload')
+      this.showProgress = true
       return true
     },
     upLoadImage(params) {
@@ -61,8 +67,9 @@ export default {
         Key: params.file.name, /* 必须 */
         StorageClass: 'STANDARD',
         Body: params.file, // 上传文件对象
-        onProgress: function(progressData) {
-          console.log(JSON.stringify(progressData))
+        onProgress: (progressData) => {
+          console.log(progressData)
+          this.percent = Math.ceil(progressData.percent * 100)
         }
       }, (err, data) => {
         if (!err || data) {
@@ -73,6 +80,7 @@ export default {
             }
             return item
           })
+          this.showProgress = false
         }
       })
     }
