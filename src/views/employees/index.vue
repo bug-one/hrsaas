@@ -44,7 +44,7 @@
             <el-button type="text" size="small">转正</el-button>
             <el-button type="text" size="small">调岗</el-button>
             <el-button type="text" size="small">离职</el-button>
-            <el-button type="text" size="small" @click="editRole">角色</el-button>
+            <el-button type="text" size="small" @click="editRole(row.id)">角色</el-button>
             <el-button type="text" size="small" @click="delEmployee(row.id)">删除</el-button>
           </template>
         </el-table-column>
@@ -66,7 +66,7 @@
         </el-row>
         <img src="" alt="">
       </el-dialog>
-      <assignRole :show-role-dialog="showRoleDialog" />
+      <assignRole ref="assignRole" :user-id="userId" :show-role-dialog="showRoleDialog" />
     </div>
   </div>
 </template>
@@ -99,7 +99,8 @@ export default {
       showDialog: false,
       showCodeDialog: false,
       staffPhoto: '',
-      showRoleDialog: false
+      showRoleDialog: false,
+      userId: ''
     }
   },
   created() {
@@ -200,7 +201,9 @@ export default {
     showQrCode() {
       qrCode.toCanvas(this.$refs.myCanvas, this.staffPhoto)
     },
-    editRole() {
+    editRole(id) {
+      this.userId = id
+      this.$refs.assignRole.getUserInfoById(id)
       this.showRoleDialog = true
     }
   }

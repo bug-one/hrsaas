@@ -14,10 +14,15 @@
 
 <script>
 import { getRoleList } from '@/api/settings'
+import { getUserInfoById } from '@/api/user'
 export default {
   props: {
     showRoleDialog: {
       type: Boolean
+    },
+    userId: {
+      type: String,
+      default: null
     }
   },
   data() {
@@ -33,6 +38,10 @@ export default {
     async getRoleList() {
       const { rows } = await getRoleList()
       this.roleList = rows
+    },
+    async getUserInfoById(id) {
+      const { roleIds } = await getUserInfoById(id)
+      this.roleIds = roleIds
     }
   }
 }
