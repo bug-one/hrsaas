@@ -16,6 +16,11 @@
           </template>
         </el-table-column>
         <el-table-column label="姓名" prop="username" sortable="" />
+        <el-table-column label="头像" prop="staffPhoto" sortable="">
+          <template slot-scope="{row}">
+            <img v-imageerror="require('@/assets/common/img.jpeg')" :src="row.staffPhoto" alt="" style="border-radius: 50%; width: 100px; height: 100px; padding: 10px">
+          </template>
+        </el-table-column>
         <el-table-column label="工号" prop="workNumber" sortable="" />
         <el-table-column label="聘用形式" prop="formOfEmployment" sortable="" :formatter="formatterEnableState" />
         <el-table-column label="部门" prop="departmentName" sortable="" />
@@ -92,6 +97,7 @@ export default {
       const { rows, total } = await getUserList(this.pageSetting)
       this.pageSetting.total = total
       this.userList = rows
+      console.log(rows)
     },
     async currentChange(page) {
       this.pageSetting.page = page
