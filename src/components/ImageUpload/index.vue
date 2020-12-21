@@ -3,7 +3,7 @@
     <el-upload action="#" list-type="picture-card" :file-list="fileList" :on-preview="preview" :class="{'disable':disable}" :on-change="onChange" :http-request="upLoadImage" :on-remove="onRemove" :before-upload="beforeUpload">
       <i class="el-icon-plus" />
     </el-upload>
-    <el-progress v-if="showProgress" :percentage="percent" style="width:200px" status="success" />
+    <el-progress v-if="showProgress" :percentage="percent" style="width:200px" />
     <el-dialog :visible.sync="showDialog" title="图片预览">
       <el-row type="flex" justify="center">
         <img :src="imgUrl" alt="">
@@ -77,6 +77,7 @@ export default {
           this.fileList = this.fileList.map(item => {
             if (item.uid === params.file.uid) {
               item.url = 'http://' + data.Location
+              item.upLoad = true
             }
             return item
           })

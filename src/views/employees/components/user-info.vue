@@ -471,23 +471,33 @@ export default {
   methods: {
     async getPersonalDetail() {
       this.formData = await getPersonalDetail(this.userId) // 获取员工数据
+      console.log(this.formData)
       if (this.formData.staffPhoto) {
-        this.$refs.personalPhoto.fileList = [{ url: this.formData.staffPhoto }]
+        this.$refs.personalPhoto.fileList = [{ url: this.formData.staffPhoto, upLoad: true }]
       }
     },
     async savePersonal() {
-      await updatePersonal({ ...this.formData, id: this.userId })
-      this.$message.success('保存成功')
+      const fileList = this.$refs.personalPhoto.fileList
+      if (fileList.some(item => !item.upLoad)) {
+        this.$message.error('请等待图片上传成功后再保存')
+      } else {
+        await updatePersonal({ ...this.formData, id: this.userId, staffPhoto: fileList && fileList.length ? fileList[0].url : '' })
+        this.$message.success('保存成功')
+      }
     },
     async saveUser() {
-    //  调用父组件
-      await saveUserDetailById(this.userInfo)
-      this.$message.success('保存成功')
+      const fileList = this.$refs.personalAvatar.fileList
+      if (fileList.some(item => !item.upLoad)) {
+        this.$message.error('请等待图片上传成功后再保存')
+      } else {
+        await saveUserDetailById({ ...this.userInfo, staffPhoto: fileList && fileList.length ? fileList[0].url : '' })
+        this.$message.success('保存成功')
+      }
     },
     async getUserInfoById() {
       this.userInfo = await getUserInfoById(this.userId)
       if (this.userInfo.staffPhoto) {
-        this.$refs.personalAvatar.fileList = [{ url: this.userInfo.staffPhoto }]
+        this.$refs.personalAvatar.fileList = [{ url: this.userInfo.staffPhoto, upLoad: true }]
       }
     }
   }
