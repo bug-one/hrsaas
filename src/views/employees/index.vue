@@ -18,7 +18,7 @@
         <el-table-column label="姓名" prop="username" sortable="" />
         <el-table-column label="头像" prop="staffPhoto" sortable="">
           <template slot-scope="{row}">
-            <img v-imageerror="require('@/assets/common/img.jpeg')" :src="row.staffPhoto" alt="" style="border-radius: 50%; width: 100px; height: 100px; padding: 10px">
+            <img v-imageerror="require('@/assets/common/img.jpeg')" :src="row.staffPhoto" alt="" style="border-radius: 50%; width: 100px; height: 100px; padding: 10px" @click="showQrCodeDialog(row.staffPhoto)">
           </template>
         </el-table-column>
         <el-table-column label="工号" prop="workNumber" sortable="" />
@@ -60,6 +60,12 @@
         />
       </el-row>
       <addEmployee :show-dialog.sync="showDialog" @getUserList="getUserList" />
+      <el-dialog :visible.sync="showCodeDialog" title="头像二维码" @opened="showQrCode">
+        <el-row type="flex" justify="center">
+          <canvas ref="myCanvas" />
+        </el-row>
+        <img src="" alt="">
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -70,6 +76,7 @@ import EmploymentEnum from '@/api/constant/employees'
 import addEmployee from '@/views/employees/components/add-employee'
 import { formatDate } from '@/filters'
 import employeesEnum from '@/api/constant/employees'
+import qrCode from 'qrcode'
 export default {
   components: {
     addEmployee
@@ -86,7 +93,9 @@ export default {
         size: 10
       },
       userList: [],
-      showDialog: false
+      showDialog: false,
+      showCodeDialog: false,
+      staffPhoto: ''
     }
   },
   created() {
@@ -97,7 +106,6 @@ export default {
       const { rows, total } = await getUserList(this.pageSetting)
       this.pageSetting.total = total
       this.userList = rows
-      console.log(rows)
     },
     async currentChange(page) {
       this.pageSetting.page = page
@@ -178,11 +186,22 @@ export default {
         bookType: 'xlsx' // 非必填
 
       })
+    },
+    showQrCodeDialog(url) {
+      if (url) {
+        this.showCodeDialog = true
+        this.staffPhoto = url
+      }
+    },
+    showQrCode() {
+      qrCode.toCanvas(this.$refs.myCanvas, this.staffPhoto)
     }
   }
 }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+ ::v-deep .el-dialog__header {
+    background: #ff69a7;
+}
 </style>
