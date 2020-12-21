@@ -40,6 +40,9 @@ Vue.directive('imageerror', imageerror)
 import components from '@/components'
 Vue.use(components)
 
+import Print from 'vue-print-nb'
+Vue.use(Print)
+
 import * as filters from '@/filters'
 
 Object.keys(filters).forEach(item => {
