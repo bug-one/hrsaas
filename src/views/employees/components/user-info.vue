@@ -2,6 +2,13 @@
   <div class="user-info">
     <!-- 个人信息 -->
     <el-form label-width="220px">
+      <el-row type="flex" justify="end">
+        <el-tooltip content="点击打印个人信息">
+          <router-link :to="`/employees/print/${userId}?type=personal`">
+            <i class="el-icon-printer" />
+          </router-link>
+        </el-tooltip>
+      </el-row>
       <!-- 工号 入职时间 -->
       <el-row class="inline-info">
         <el-col :span="12">
@@ -471,7 +478,6 @@ export default {
   methods: {
     async getPersonalDetail() {
       this.formData = await getPersonalDetail(this.userId) // 获取员工数据
-      console.log(this.formData)
       if (this.formData.staffPhoto) {
         this.$refs.personalPhoto.fileList = [{ url: this.formData.staffPhoto, upLoad: true }]
       }
@@ -495,9 +501,13 @@ export default {
       }
     },
     async getUserInfoById() {
-      this.userInfo = await getUserInfoById(this.userId)
-      if (this.userInfo.staffPhoto) {
-        this.$refs.personalAvatar.fileList = [{ url: this.userInfo.staffPhoto, upLoad: true }]
+      try {
+        this.userInfo = await getUserInfoById(this.userId)
+        if (this.userInfo.staffPhoto) {
+          this.$refs.personalAvatar.fileList = [{ url: this.userInfo.staffPhoto, upLoad: true }]
+        }
+      } catch (error) {
+        console.log(error)
       }
     }
   }
