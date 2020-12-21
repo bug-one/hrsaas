@@ -201,9 +201,9 @@ export default {
     showQrCode() {
       qrCode.toCanvas(this.$refs.myCanvas, this.staffPhoto)
     },
-    editRole(id) {
+    async editRole(id) {
       this.userId = id
-      this.$refs.assignRole.getUserInfoById(id)
+      await this.$refs.assignRole.getUserInfoById(id)
       this.showRoleDialog = true
     }
   }
