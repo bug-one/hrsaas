@@ -17,8 +17,9 @@
               </el-table-column>
               <el-table-column prop="name" label="角色名" width="200px" />
               <el-table-column prop="description" label="描述" />
-              <el-table-column label="操作" width="200px">
+              <el-table-column label="操作" width="300px">
                 <template slot-scope="scope">
+                  <el-button size="small" type="primary" plain @click="assignPermission(scope.row.id)">分配权限</el-button>
                   <el-button size="small" type="primary" plain @click="editRole(scope.row.id)">编辑角色</el-button>
                   <el-button size="small" type="primary" plain @click="delRole(scope.row.id)">删除角色</el-button>
                 </template>
@@ -82,6 +83,15 @@
           <el-button type="primary" @click="confirm">确认</el-button>
         </template>
       </el-dialog>
+      <el-dialog title="编辑权限" :visible="showPermissionDialog" @close="permissionBtnCancel">
+        <el-tree :data="permissionList" :props="{label:'name'}" show-checkbox node-key="id" :default-checked-keys="permIds" />
+        <template slot="footer">
+          <el-row type="flex" justify="center">
+            <el-button @click="permissionBtnCancel">取消</el-button>
+            <el-button type="primary">确定</el-button>
+          </el-row>
+        </template>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -89,6 +99,8 @@
 <script>
 import { getCompanyDetail, getRoleList, delRoleById, addRole, getRoleDetail, editRole } from '@/api/settings'
 import { mapGetters } from 'vuex'
+import { getPermissionList } from '@/api/permission'
+import { convertTreeData } from '@/utils'
 export default {
   data() {
     return {
@@ -119,7 +131,10 @@ export default {
             trigger: 'blur'
           }
         ]
-      }
+      },
+      showPermissionDialog: false,
+      permissionList: [],
+      permIds: []
     }
   },
   computed: {
@@ -141,6 +156,7 @@ export default {
   },
   created() {
     this.getRoleList()
+    this.getPermissionList()
   },
   methods: {
     getRoleList() {
@@ -215,6 +231,18 @@ export default {
       } catch (error) {
         console.log(error)
       }
+    },
+    async getPermissionList() {
+      const data = await getPermissionList()
+      this.permissionList = convertTreeData(data, '0')
+    },
+    async assignPermission(id) {
+      const { permIds } = await getRoleDetail(id)
+      this.permIds = permIds
+      this.showPermissionDialog = true
+    },
+    permissionBtnCancel() {
+      this.showPermissionDialog = false
     }
   }
 }
