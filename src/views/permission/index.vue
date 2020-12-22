@@ -6,7 +6,7 @@
           <span>权限设置，请谨慎</span>
         </template>
         <template slot="after">
-          <el-button @click="showPermissionDialog(1,'0')">新增权限</el-button>
+          <el-button @click="addPermission(1,'0')">新增权限</el-button>
         </template>
       </PageTools>
       <el-card>
@@ -16,7 +16,7 @@
           <el-table-column align="center" label="权限描述" prop="description" />
           <el-table-column align="center" label="操作">
             <template slot-scope="{row}">
-              <el-button v-if="row.type === 1" type="text" @click="showPermissionDialog(2,row.id)">添加</el-button>
+              <el-button v-if="row.type === 1" type="text" @click="addPermission(2,row.id)">添加</el-button>
               <el-button type="text">编辑</el-button>
               <el-button type="text">删除</el-button>
             </template>
@@ -45,7 +45,7 @@
           </el-form-item>
         </el-form>
         <el-row type="flex" justify="center">
-          <el-button type="primary" @click="addPermission">确认</el-button>
+          <el-button type="primary" @click="btnConfirm">确认</el-button>
           <el-button @click="btnCancel">取消</el-button>
         </el-row>
       </el-dialog>
@@ -83,12 +83,12 @@ export default {
       const data = await getPermissionList()
       this.permissionList = convertTreeData(data, '0')
     },
-    showPermissionDialog(type, pid) {
+    addPermission(type, pid) {
       this.formData.type = type
       this.formData.pid = pid
       this.showDialog = true
     },
-    async addPermission() {
+    async btnConfirm() {
       await addPermission(this.formData)
       this.$message.success('添加权限成功')
       await this.getPermissionList()
