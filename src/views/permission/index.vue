@@ -17,7 +17,7 @@
           <el-table-column align="center" label="操作">
             <template slot-scope="{row}">
               <el-button v-if="row.type === 1" type="text" @click="addPermission(2,row.id)">添加</el-button>
-              <el-button type="text">编辑</el-button>
+              <el-button type="text" @click="editPermission(row.id)">编辑</el-button>
               <el-button type="text">删除</el-button>
             </template>
           </el-table-column>
@@ -55,7 +55,7 @@
 
 <script>
 import PageTools from '@/components/PageTools'
-import { getPermissionList, addPermission } from '@/api/permission'
+import { getPermissionList, addPermission, getPermissionDetail } from '@/api/permission'
 import { convertTreeData } from '@/utils'
 export default {
   components: {
@@ -95,7 +95,7 @@ export default {
       this.btnCancel()
     },
     btnCancel() {
-      this.formData = {
+      this.getPermissionDetail = {
         name: '',
         code: '',
         description: '',
@@ -104,6 +104,10 @@ export default {
         pid: ''
       }
       this.showDialog = false
+    },
+    async editPermission(id) {
+      this.formData = await getPermissionDetail(id)
+      this.showDialog = true
     }
   }
 }
