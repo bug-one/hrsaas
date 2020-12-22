@@ -18,7 +18,7 @@
             <template slot-scope="{row}">
               <el-button v-if="row.type === 1" type="text" @click="addPermission(2,row.id)">添加</el-button>
               <el-button type="text" @click="editPermission(row.id)">编辑</el-button>
-              <el-button type="text">删除</el-button>
+              <el-button type="text" @click="delPermission(row.id)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -55,7 +55,7 @@
 
 <script>
 import PageTools from '@/components/PageTools'
-import { getPermissionList, addPermission, getPermissionDetail, updatePermission } from '@/api/permission'
+import { getPermissionList, addPermission, getPermissionDetail, updatePermission, delPermission } from '@/api/permission'
 import { convertTreeData } from '@/utils'
 export default {
   components: {
@@ -122,6 +122,28 @@ export default {
     async editPermission(id) {
       this.formData = await getPermissionDetail(id)
       this.showDialog = true
+    },
+    async delPermission(id) {
+      try {
+        await this.$confirm('此操作将永久删除该权限, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+        await delPermission(id)
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        })
+        this.getPermissionList()
+      } catch (error) {
+        if (error === 'cancel') {
+          this.$message({
+            type: 'info',
+            message: '你挽救了一个部门!'
+          })
+        }
+      }
     }
   }
 }
