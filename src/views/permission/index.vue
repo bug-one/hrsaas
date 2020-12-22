@@ -23,7 +23,7 @@
           </el-table-column>
         </el-table>
       </el-card>
-      <el-dialog title="添加权限" :visible.sync="showDialog">
+      <el-dialog :title="title" :visible="showDialog" @close="btnCancel">
         <el-form label-width="80px">
           <el-form-item label="权限名称">
             <el-input v-model="formData.name" />
@@ -75,6 +75,11 @@ export default {
       }
     }
   },
+  computed: {
+    title() {
+      return this.formData.id ? '编辑权限' : '增加权限'
+    }
+  },
   created() {
     this.getPermissionList()
   },
@@ -92,11 +97,11 @@ export default {
       try {
         if (this.formData.id) {
           await updatePermission(this.formData)
-          this.$message.success('权限修改成功')
         } else {
           await addPermission(this.formData)
-          this.$message.success('权限添加成功')
         }
+        this.$message.success(this.formData.id ? '权限修改成功' : '权限添加成功')
+
         await this.getPermissionList()
         this.btnCancel()
       } catch (error) {
