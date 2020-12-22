@@ -10,7 +10,7 @@
         </template>
       </PageTools>
       <el-card>
-        <el-table border :data="permissionList">
+        <el-table border :data="permissionList" row-key="id">
           <el-table-column label="权限名称" prop="name" width="160px" />
           <el-table-column align="center" label="权限标识" prop="code" />
           <el-table-column align="center" label="权限描述" prop="description" />
@@ -30,6 +30,7 @@
 <script>
 import PageTools from '@/components/PageTools'
 import { getPermissionList } from '@/api/permission'
+import { convertTreeData } from '@/utils'
 export default {
   components: {
     PageTools
@@ -44,7 +45,8 @@ export default {
   },
   methods: {
     async getPermissionList() {
-      this.permissionList = await getPermissionList()
+      const data = await getPermissionList()
+      this.permissionList = convertTreeData(data, '0')
     }
   }
 }
