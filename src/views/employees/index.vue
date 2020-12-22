@@ -66,7 +66,7 @@
         </el-row>
         <img src="" alt="">
       </el-dialog>
-      <assignRole ref="assignRole" :user-id="userId" :show-role-dialog="showRoleDialog" />
+      <assignRole ref="assignRole" :user-id="userId" :show-role-dialog.sync="showRoleDialog" />
     </div>
   </div>
 </template>
