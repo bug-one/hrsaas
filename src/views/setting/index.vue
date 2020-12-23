@@ -84,11 +84,11 @@
         </template>
       </el-dialog>
       <el-dialog title="编辑权限" :visible="showPermissionDialog" @close="permissionBtnCancel">
-        <el-tree :data="permissionList" :props="{label:'name'}" show-checkbox node-key="id" :default-checked-keys="permIds" />
+        <el-tree ref="tree" default-expand-all :data="permissionList" :props="{label:'name'}" show-checkbox check-strictly node-key="id" :default-checked-keys="permIds" />
         <template slot="footer">
           <el-row type="flex" justify="center">
             <el-button @click="permissionBtnCancel">取消</el-button>
-            <el-button type="primary">确定</el-button>
+            <el-button type="primary" @click="permissionBtnConfirm">确定</el-button>
           </el-row>
         </template>
       </el-dialog>
@@ -97,7 +97,7 @@
 </template>
 
 <script>
-import { getCompanyDetail, getRoleList, delRoleById, addRole, getRoleDetail, editRole } from '@/api/settings'
+import { getCompanyDetail, getRoleList, delRoleById, addRole, getRoleDetail, editRole, assignPerm } from '@/api/settings'
 import { mapGetters } from 'vuex'
 import { getPermissionList } from '@/api/permission'
 import { convertTreeData } from '@/utils'
@@ -134,7 +134,8 @@ export default {
       },
       showPermissionDialog: false,
       permissionList: [],
-      permIds: []
+      permIds: [],
+      userId: ''
     }
   },
   computed: {
@@ -152,6 +153,9 @@ export default {
         }
       },
       immediate: true
+    },
+    permIds(val) {
+      console.log(val)
     }
   },
   created() {
@@ -237,12 +241,29 @@ export default {
       this.permissionList = convertTreeData(data, '0')
     },
     async assignPermission(id) {
+      this.userId = id
       const { permIds } = await getRoleDetail(id)
       this.permIds = permIds
       this.showPermissionDialog = true
+      this.$nextTick(() => {
+        this.$refs.tree.setCheckedKeys(this.permIds)
+      })
     },
     permissionBtnCancel() {
+      this.permIds = []
       this.showPermissionDialog = false
+    },
+    async permissionBtnConfirm() {
+      try {
+        const id = this.userId
+        const permIds = this.$refs.tree.getCheckedKeys()
+        const data = { id, permIds }
+        await assignPerm(data)
+        this.$message.success('修改成功')
+        this.showPermissionDialog = false
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 }
