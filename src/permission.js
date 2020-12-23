@@ -12,8 +12,10 @@ router.beforeEach(async(to, from, next) => {
       next('/')
     } else {
       if (!store.getters.userId) {
-        await store.dispatch('user/getUserInfo')
-        router.addRoutes(asyncRoutes)
+        const res = await store.dispatch('user/getUserInfo')
+        const menus = res.roles.menus
+        const myRoutes = asyncRoutes.filter(item => menus.indexOf(item.name) > -1)
+        router.addRoutes(myRoutes)
         next(to.path)
       }
       next()

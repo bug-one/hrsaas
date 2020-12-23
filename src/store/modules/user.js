@@ -33,6 +33,7 @@ export default {
       const userInfo = await getUserInfo()
       const userDetail = await getUserInfoById(userInfo.userId)
       context.commit('getUserInfo', { ...userInfo, ...userDetail })
+      return { ...userInfo, ...userDetail }
     },
     logout({ commit }) {
       commit('removeUserInfo')
