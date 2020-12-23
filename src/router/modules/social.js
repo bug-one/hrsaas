@@ -4,9 +4,9 @@ export default
 {
   path: '/social',
   component: Layout,
+  name: 'social_securitys',
   children: [{
     path: '',
-    name: 'Social',
     component: () => import('@/views/social/index'),
     meta: { title: '社保', icon: 'table' }
   }]

@@ -4,10 +4,10 @@ export default
 {
   path: '/employees',
   component: Layout,
+  name: 'employees',
   children: [
     {
       path: '',
-      name: 'Employees',
       component: () => import('@/views/employees/index'),
       meta: { title: '员工', icon: 'people' }
     },

@@ -4,9 +4,9 @@ export default
 {
   path: '/departments',
   component: Layout,
+  name: 'departments',
   children: [{
     path: '',
-    name: 'Departments',
     component: () => import('@/views/departments/index'),
     meta: { title: '组织架构', icon: 'tree' }
   }]
