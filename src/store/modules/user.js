@@ -1,5 +1,6 @@
 import { setToken, getToken, removeToken, setTimeStamp } from '@/utils/auth'
 import { login, getUserInfo, getUserInfoById } from '@/api/user'
+import { resetRouter } from '@/router'
 
 export default {
   namespaced: true,
@@ -38,6 +39,7 @@ export default {
     logout({ commit }) {
       commit('removeUserInfo')
       commit('removeToken')
+      resetRouter()
     }
 
   }
