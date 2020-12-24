@@ -49,6 +49,9 @@ Object.keys(filters).forEach(item => {
   Vue.filter(item, filters[item])
 })
 
+import { checkPermissionMixin } from '@/mixin'
+Vue.mixin(checkPermissionMixin)
+
 Vue.config.productionTip = false
 
 new Vue({

@@ -6,7 +6,7 @@
         <template slot="after">
           <el-button size="small" type="warning" @click="$router.push('/import')">导入</el-button>
           <el-button size="small" type="danger" @click="exportData">导出</el-button>
-          <el-button size="small" type="primary" @click="showDialog = true">新增员工</el-button>
+          <el-button size="small" type="primary" :disabled="checkPermission('POINT-USER-ADD')" @click="showDialog = true">新增员工</el-button>
         </template>
       </pageTools>
       <el-table :data="userList" border>
@@ -205,9 +205,6 @@ export default {
       this.userId = id
       await this.$refs.assignRole.getUserInfoById(id)
       this.showRoleDialog = true
-    },
-    checkPermission(point) {
-      return this.$store.state.user.userInfo.roles.points.indexOf(point) === -1
     }
   }
 }
