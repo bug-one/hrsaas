@@ -15,6 +15,7 @@ router.beforeEach(async(to, from, next) => {
         const res = await store.dispatch('user/getUserInfo')
         const menus = res.roles.menus
         const myRoutes = asyncRoutes.filter(item => menus.indexOf(item.name) > -1)
+        myRoutes.push({ path: '*', redirect: '/404', hidden: true })
         router.addRoutes(myRoutes)
         next(to.path)
       }
