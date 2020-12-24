@@ -45,7 +45,7 @@
             <el-button type="text" size="small">调岗</el-button>
             <el-button type="text" size="small">离职</el-button>
             <el-button type="text" size="small" @click="editRole(row.id)">角色</el-button>
-            <el-button type="text" size="small" @click="delEmployee(row.id)">删除</el-button>
+            <el-button :disabled="checkPermission('point-user-delete')" type="text" size="small" @click="delEmployee(row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -205,6 +205,9 @@ export default {
       this.userId = id
       await this.$refs.assignRole.getUserInfoById(id)
       this.showRoleDialog = true
+    },
+    checkPermission(point) {
+      return this.$store.state.user.userInfo.roles.points.indexOf(point) === -1
     }
   }
 }
