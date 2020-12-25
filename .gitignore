@@ -17,3 +17,4 @@ tests/**/coverage/
 debug.log
 debug.log
 src/private-config.js
+debug.log
