@@ -5,11 +5,11 @@
       <div>
         <div class="fl headL">
           <div class="headImg">
-            <img>
+            <img v-imageerror="require('@/assets/common/img.jpeg')" :src="$store.getters.staffPhoto">
           </div>
           <div class="headInfoTip">
-            <p class="firstChild">早安，董总，祝你开心每一天！</p>
-            <p class="lastChild">早安，董总，祝你开心每一天！</p>
+            <p class="firstChild">早安，{{ $store.getters.username }}，祝你开心每一天！</p>
+            <p class="lastChild">早安，{{ $store.getters.username }}，祝你开心每一天！</p>
           </div>
         </div>
         <div class="fr" />
