@@ -84,7 +84,8 @@
           <div slot="header" class="header">
             <span>绩效指数</span>
           </div>
-        <!-- 放置雷达图 -->
+          <!-- 放置雷达图 -->
+          <Radar />
         </el-card>
         <!-- 帮助连接 -->
         <el-card class="box-card">
@@ -121,9 +122,11 @@
 
 <script>
 import WorkCalendar from '@/views/dashboard/components/work-calendar'
+import Radar from '@/views/dashboard/components/radar'
 export default {
   components: {
-    WorkCalendar
+    WorkCalendar,
+    Radar
   }
 }
 </script>

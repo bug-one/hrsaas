@@ -57,7 +57,6 @@ export default {
     },
     isRest(date) {
       const week = date.getDay()
-      console.log(week)
       return week === 0 || week === 6
     }
   }
