@@ -8,12 +8,23 @@
         <el-option v-for="item in 12" :key="item" :label="item + '月'" :value="item" />
       </el-select>
     </el-row>
-    <el-calendar v-model="currentDate" />
+    <el-calendar v-model="currentDate">
+      <template v-slot:dateCell="scope">
+        {{ scope.data.day | getDay }}
+        <span v-if="isRest(scope.date)" class="restIcon">休</span>
+      </template>
+    </el-calendar>
   </div>
 </template>
 
 <script>
 export default {
+  filters: {
+    getDay(val) {
+      const day = val.split('-')[2]
+      return day.startsWith('0') ? day.substr('1') : day
+    }
+  },
   props: {
     startDate: {
       type: Date,
@@ -43,11 +54,26 @@ export default {
       const month = this.currentMonth
       const date = `${year}-${month}-1`
       this.currentDate = new Date(date)
+    },
+    isRest(date) {
+      const week = date.getDay()
+      console.log(week)
+      return week === 0 || week === 6
     }
   }
 }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+.restIcon{
+  color: #fff;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  text-align: center;
+  line-height: 20px;
+  background-color: #fa5398;
+}
 </style>
