@@ -33,7 +33,10 @@ if (process.env.NODE_ENV === 'production') {
 // set ElementUI lang to EN
 // Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明
-Vue.use(ElementUI)
+// Vue.use(ElementUI)
+Vue.use(ElementUI, {
+  i18n: key => i18n.t(key)
+})
 
 import { imageerror } from '@/directives'
 

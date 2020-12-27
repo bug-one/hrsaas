@@ -3,6 +3,9 @@ import VueI18n from 'vue-i18n'
 //
 Vue.use(VueI18n)
 
+import eleLangEn from 'element-ui/lib/locale/lang/en' // lang i18n
+import eleLangCn from 'element-ui/lib/locale/lang/zh-CN' // lang i18n
+
 // 准备翻译的语言环境信息
 const messages = {
   en: {
@@ -16,7 +19,8 @@ const messages = {
     attendances: 'attendances',
     salarys: 'salarys',
     social_securitys: 'social_securitys',
-    Languages: 'Languages'
+    Languages: 'Languages',
+    ...eleLangEn
   },
   cn: {
     hello: '你好',
@@ -29,7 +33,8 @@ const messages = {
     attendances: '考勤',
     salarys: '工资',
     social_securitys: '社保',
-    Languages: '语言'
+    Languages: '语言',
+    ...eleLangCn
   }
 }
 
