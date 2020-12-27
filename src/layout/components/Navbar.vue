@@ -9,6 +9,7 @@
     <!-- <breadcrumb class="breadcrumb-container" /> -->
 
     <div class="right-menu">
+      <FullScreen />
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <img v-imageerror="defaultImg" :src="staffPhoto" class="user-avatar">
@@ -37,11 +38,13 @@
 import { mapGetters } from 'vuex'
 // import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
+import FullScreen from '@/components/FullScreen'
 
 export default {
   components: {
     // Breadcrumb,
-    Hamburger
+    Hamburger,
+    FullScreen
   },
   data() {
     return {
@@ -91,9 +94,17 @@ export default {
   }
 
   .right-menu {
+    display: flex;
+    align-items: center;
     float: right;
     height: 100%;
     line-height: 50px;
+
+    .el-icon-full-screen{
+      color: #fff;
+      font-size: 20px;
+      padding: 7px 10px 0;
+    }
 
     &:focus {
       outline: none;
