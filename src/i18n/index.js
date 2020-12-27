@@ -15,7 +15,8 @@ const messages = {
     permission: 'permission',
     attendances: 'attendances',
     salarys: 'salarys',
-    social_securitys: 'social_securitys'
+    social_securitys: 'social_securitys',
+    Languages: 'Languages'
   },
   cn: {
     hello: '你好',
@@ -27,7 +28,8 @@ const messages = {
     permission: '权限控制',
     attendances: '考勤',
     salarys: '工资',
-    social_securitys: '社保'
+    social_securitys: '社保',
+    Languages: '语言'
   }
 }
 

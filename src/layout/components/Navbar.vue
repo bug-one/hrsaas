@@ -11,6 +11,7 @@
     <div class="right-menu">
       <FullScreen />
       <ThemePicker />
+      <Languages />
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <img v-imageerror="defaultImg" :src="staffPhoto" class="user-avatar">
@@ -41,13 +42,15 @@ import { mapGetters } from 'vuex'
 import Hamburger from '@/components/Hamburger'
 import FullScreen from '@/components/FullScreen'
 import ThemePicker from '@/components/ThemePicker'
+import Languages from '@/components/Languages'
 
 export default {
   components: {
     // Breadcrumb,
     Hamburger,
     FullScreen,
-    ThemePicker
+    ThemePicker,
+    Languages
   },
   data() {
     return {
