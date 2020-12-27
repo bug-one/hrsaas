@@ -11,10 +11,15 @@
 </template>
 
 <script>
+import { setLanguage, getLanguage } from '@/utils/auth'
 export default {
+  created() {
+    this.$i18n.locale = getLanguage() || 'cn'
+  },
   methods: {
     handleCommand(lang) {
       this.$i18n.locale = lang
+      setLanguage(lang)
     }
   }
 }

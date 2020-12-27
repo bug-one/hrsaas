@@ -2,6 +2,7 @@ import Cookies from 'js-cookie'
 
 const TokenKey = 'vue_admin_template_token'
 const timeKey = 'hrsaas_timestamp_key'
+const LanguageKey = 'lang'
 
 export function getToken() {
   return Cookies.get(TokenKey)
@@ -25,4 +26,12 @@ export function setTimeStamp() {
 
 export function removeTimeStamp() {
   return Cookies.remove(timeKey)
+}
+
+export function setLanguage(lang) {
+  return Cookies.set(LanguageKey, lang)
+}
+
+export function getLanguage() {
+  return Cookies.get(LanguageKey)
 }
