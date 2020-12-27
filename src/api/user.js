@@ -20,7 +20,3 @@ export function getUserInfoById(id) {
     url: '/sys/user/' + id
   })
 }
-
-export function logout() {
-
-}
