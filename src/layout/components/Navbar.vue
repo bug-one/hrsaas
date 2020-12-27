@@ -10,6 +10,7 @@
 
     <div class="right-menu">
       <FullScreen />
+      <ThemePicker />
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <img v-imageerror="defaultImg" :src="staffPhoto" class="user-avatar">
@@ -39,12 +40,14 @@ import { mapGetters } from 'vuex'
 // import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import FullScreen from '@/components/FullScreen'
+import ThemePicker from '@/components/ThemePicker'
 
 export default {
   components: {
     // Breadcrumb,
     Hamburger,
-    FullScreen
+    FullScreen,
+    ThemePicker
   },
   data() {
     return {
@@ -102,8 +105,12 @@ export default {
 
     .el-icon-full-screen{
       color: #fff;
-      font-size: 20px;
-      padding: 7px 10px 0;
+      font-size: 26px;
+      padding: 6px 10px 0 0;
+    }
+    .theme-picker{
+      padding: 10px 10px 0 0;
+
     }
 
     &:focus {
